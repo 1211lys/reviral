@@ -9,3 +9,12 @@
 body {
   font-family: var(--font-noto-sans), sans-serif;
 }
+
+::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-none {
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+  scrollbar-width: none; /* Firefox */
+}
