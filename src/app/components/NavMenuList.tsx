@@ -23,7 +23,7 @@ export default function NavMenuList() {
       <MobileMenuButton LIST={LIST} />
       <div className="hidden sm:flex sm:gap-8">
         {LIST.map((item) => (
-          <button key={item.key}>
+          <button key={item.key} className="hover:text-red-500">
             <div className="flex items-center gap-2">
               {item.src === "" ? (
                 <></>

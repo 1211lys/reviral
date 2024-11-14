@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
+import SvgComponent from "../../../public/assets/MenuSvg";
 
 interface ListItem {
   key: number;
@@ -38,30 +39,44 @@ export default function MobileMenuButton({ LIST }: Props) {
 
   return (
     <>
-      <button ref={buttonRef} onClick={toggleMenu} className="relative">
-        <Image
-          className="text-red-500 sm:hidden"
-          src="/Path.svg"
-          alt="mb-menu-button"
-          width={24}
-          height={24}
-          priority
-        />
+      <button
+        ref={buttonRef}
+        onClick={toggleMenu}
+        className="relative group sm:hidden"
+      >
+        <SvgComponent className="fill-current text-[#F89A33] group-hover:text-red-500" />
       </button>
 
       {isCheck && (
         <div
           ref={menuRef}
-          className="absolute top-20 right-0 bg-white shadow-lg p-2"
+          className="absolute top-20 right-3 bg-white shadow-lg p-2 rounded-xl border border-gray-300"
         >
-          {LIST.map((item) => (
-            <div
+          {LIST.map((item, index) => (
+            <button
               key={item.key}
-              className="p-2 hover:bg-gray-200 cursor-pointer text-black"
-              onClick={() => console.log(`${item} clicked`)}
+              className={`flex ${
+                index !== LIST.length - 1 ? "mb-4" : ""
+              } hover:text-red-500`}
             >
-              {item.title}
-            </div>
+              <div className="flex items-center gap-4 p-2">
+                {item.src === "" ? null : (
+                  <Image
+                    src={`${item.src}`}
+                    width={24}
+                    height={24}
+                    alt="logo"
+                  />
+                )}
+                <div
+                  className={`${
+                    item.src === "" ? "pl-[24px] ml-4" : ""
+                  } font-semibold text-sm`}
+                >
+                  {item.title}
+                </div>
+              </div>
+            </button>
           ))}
         </div>
       )}
