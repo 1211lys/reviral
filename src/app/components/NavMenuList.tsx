@@ -16,14 +16,14 @@ export default function NavMenuList() {
           <Image src="/images/logo.png" width={42} height={42} alt={"logo"} />
         </button>
         <div className="flex flex-col justify-center">
-          <h1 className="font-bold text-lg text-red-500 ">리바이럴</h1>
+          <h1 className="font-bold text-lg text-blue-500 ">리바이럴</h1>
           <h2 className="text-sm">세상의 모든 리뷰</h2>
         </div>
       </div>
       <MobileMenuButton LIST={LIST} />
       <div className="hidden sm:flex sm:gap-8">
         {LIST.map((item) => (
-          <button key={item.key} className="hover:text-red-500">
+          <button key={item.key} className="hover:text-blue-500">
             <div className="flex items-center gap-2">
               {item.src === "" ? (
                 <></>

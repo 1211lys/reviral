@@ -23,11 +23,11 @@ export default function MainMenuList() {
         <button
           className={`${
             item.key === activeKey
-              ? "border-b-2 border-b-red-500 text-red-500"
+              ? "border-b-2 border-b-blue-500 text-blue-500"
               : "border-b-2 border-b-white text-black"
           } ${
             item.key === 0 ? "min-w-[20px]" : "min-w-[70px]"
-          } mx-5 pb-2 hover:border-b-2 hover:border-b-red-500 hover:text-red-500 focus:outline-none`}
+          } mx-5 pb-2 hover:border-b-2 hover:border-b-blue-500 hover:text-blue-500 focus:outline-none`}
           key={item.key}
           onClick={() => handleClick(item.key)}
         >

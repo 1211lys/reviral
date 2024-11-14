@@ -10,6 +10,10 @@ export default {
     fontFamily: {
       sans: ["var(--font-noto-sans)", "sans-serif"],
     },
+    screens: {
+      sm: "640px",
+      banner: "1440px",
+    },
     extend: {
       colors: {
         background: "var(--background)",

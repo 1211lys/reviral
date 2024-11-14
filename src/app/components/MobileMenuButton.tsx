@@ -44,20 +44,20 @@ export default function MobileMenuButton({ LIST }: Props) {
         onClick={toggleMenu}
         className="relative group sm:hidden"
       >
-        <SvgComponent className="fill-current text-[#F89A33] group-hover:text-red-500" />
+        <SvgComponent className="fill-current text-[#80A1EA] group-hover:text-blue-500" />
       </button>
 
       {isCheck && (
         <div
           ref={menuRef}
-          className="absolute top-20 right-3 bg-white shadow-lg p-2 rounded-xl border border-gray-300"
+          className="absolute top-20 right-3 bg-white shadow-lg p-2 rounded-xl border border-gray-300 z-50"
         >
           {LIST.map((item, index) => (
             <button
               key={item.key}
               className={`flex ${
                 index !== LIST.length - 1 ? "mb-4" : ""
-              } hover:text-red-500`}
+              } hover:text-blue-500`}
             >
               <div className="flex items-center gap-4 p-2">
                 {item.src === "" ? null : (
