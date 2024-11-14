@@ -25,16 +25,18 @@ const BANNER_BUTTON_LIST = [
 export default function MainBanner() {
   return (
     <>
-      <div className="w-screen border-t-2 border-gray-200 py-20 relative">
+      <div className="w-screen border-t-2 border-gray-200 py-10 relative">
         <div className="banner:hidden">
-          <div className="absolute bottom-20 right-[5%] w-10 h-10 bg-red-600 z-10"></div>
+          <div className="absolute bottom-10 right-[5%] w-10 h-10 bg-red-600 z-10">
+            인덱스
+          </div>
           <Swiper
             spaceBetween={0}
             slidesPerView={1}
             centeredSlides={true}
             loop={true}
             autoplay={{
-              delay: 2000,
+              delay: 3000,
               disableOnInteraction: false,
             }}
             pagination={{ clickable: true }}
@@ -65,20 +67,22 @@ export default function MainBanner() {
             centeredSlides={true}
             loop={true}
             autoplay={{
-              delay: 2000,
+              delay: 3000,
               disableOnInteraction: false,
             }}
             pagination={{ clickable: true }}
             modules={[Autoplay]}
           >
-            <div className="absolute bottom-0 right-[20%] w-10 h-10 bg-red-600 z-10"></div>
+            <div className="absolute bottom-0 right-[20%] w-10 h-10 bg-red-600 z-10">
+              인덱스
+            </div>
             {IMAGE_LIST.map((item) => (
               <SwiperSlide
                 key={item.key}
                 style={{ minWidth: "980px", position: "relative" }}
               >
                 <div
-                  className={`relative w-full min-w-[980px] min-h-[330px `}
+                  className={`relative w-full min-w-[980px] min-h-[330px] `}
                   style={{ paddingBottom: "35%" }}
                 >
                   <Image
@@ -93,7 +97,7 @@ export default function MainBanner() {
           </Swiper>
         </div>
       </div>
-      <div className="flex items-center justify-center p-3 gap-2 sm:gap-10 pb-20 border-b-2 border-gray-200">
+      <div className="flex items-center justify-center p-3 gap-2 sm:gap-10 pb-10 border-b-2 border-gray-200">
         {BANNER_BUTTON_LIST.map((item) => (
           <button
             key={item.key}

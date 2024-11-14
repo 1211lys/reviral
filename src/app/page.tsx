@@ -1,4 +1,6 @@
+import ContentItems from "./components/common/ContentItems";
 import MainBanner from "./components/MainBanner";
+import MainCampaign from "./components/MainCampaign";
 import MainMenuList from "./components/MainMenuList";
 import NavMenuList from "./components/NavMenuList";
 
@@ -15,6 +17,9 @@ export default function Home() {
       </div>
       <div>
         <MainBanner />
+      </div>
+      <div>
+        <MainCampaign />
       </div>
     </div>
   );
