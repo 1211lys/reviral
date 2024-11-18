@@ -4,9 +4,9 @@ import ContentItems from "./common/ContentItems";
 export default function MainCampaign() {
   return (
     <div className="py-10 flex flex-col items-center justify-center w-full ">
-      <h1 className="font-bold text-2xl text-red-500 mb-5">
+      <h1 className="font-bold text-3xl text-red-500 mb-5">
         마감 임박
-        <span className="font-normal text-black text-2xl ">
+        <span className="font-normal text-black text-3xl ">
           {" "}
           켐페인 놓치지 마세요!
         </span>

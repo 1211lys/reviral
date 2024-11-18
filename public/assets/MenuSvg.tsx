@@ -1,11 +1,10 @@
-// SvgComponent.tsx
 import * as React from "react";
 
 interface Props {
   className?: string;
 }
 
-const SvgComponent = ({ className }: Props) => (
+const MenuSvg = ({ className }: Props) => (
   <svg
     xmlns="http://www.w3.org/2000/svg"
     fill="currentColor"
@@ -20,4 +19,4 @@ const SvgComponent = ({ className }: Props) => (
   </svg>
 );
 
-export default SvgComponent;
+export default MenuSvg;

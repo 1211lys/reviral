@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
-import SvgComponent from "../../../public/assets/MenuSvg";
+import MenuSvg from "../../../public/assets/MenuSvg";
 
 interface ListItem {
   key: number;
@@ -44,7 +44,7 @@ export default function MobileMenuButton({ LIST }: Props) {
         onClick={toggleMenu}
         className="relative group sm:hidden"
       >
-        <SvgComponent className="fill-current text-[#80A1EA] group-hover:text-blue-500" />
+        <MenuSvg className="fill-current text-[#80A1EA] group-hover:text-blue-500" />
       </button>
 
       {isCheck && (
