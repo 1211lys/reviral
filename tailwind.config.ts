@@ -11,6 +11,7 @@ export default {
       xs: "2px",
       none: "0px",
     },
+
     fontFamily: {
       sans: ["var(--font-noto-sans)", "sans-serif"],
     },
@@ -25,6 +26,7 @@ export default {
       colors: {
         background: "var(--background)",
         foreground: "var(--foreground)",
+        bgBLue: "#F2F6FD",
       },
     },
   },

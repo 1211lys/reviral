@@ -1,7 +1,23 @@
 import React from "react";
 import ContentItems from "./common/ContentItems";
 
-export default function MainCampaign() {
+interface List {
+  key: number;
+  src: string;
+  title: string;
+  itemsPrice: number;
+  point: number;
+  maxCount: number;
+  userCount: number;
+  date: string;
+  company: string;
+}
+
+interface Props {
+  Data: List[];
+}
+
+export default function MainCampaign({ Data }: Props) {
   return (
     <div className="py-10 flex flex-col items-center justify-center w-full ">
       <h1 className="font-bold text-3xl text-red-500 mb-5">
@@ -16,7 +32,7 @@ export default function MainCampaign() {
           전체 보기 {">"}
         </button>
       </div>
-      <ContentItems />
+      <ContentItems Data={Data} />
     </div>
   );
 }

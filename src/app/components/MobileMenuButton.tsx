@@ -3,11 +3,13 @@
 import Image from "next/image";
 import React, { useState, useEffect, useRef } from "react";
 import MenuSvg from "../../../public/assets/MenuSvg";
+import { useRouter } from "next/navigation";
 
 interface ListItem {
   key: number;
   title: string;
   src: string;
+  to: string;
 }
 
 interface Props {
@@ -18,6 +20,11 @@ export default function MobileMenuButton({ LIST }: Props) {
   const [isCheck, setIsCheck] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
+
+  const handleClick = (to: string) => {
+    router.push(to);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -58,6 +65,7 @@ export default function MobileMenuButton({ LIST }: Props) {
               className={`flex ${
                 index !== LIST.length - 1 ? "mb-4" : ""
               } hover:text-blue-500`}
+              onClick={() => handleClick(item.to)}
             >
               <div className="flex items-center gap-4 p-2">
                 {item.src === "" ? null : (

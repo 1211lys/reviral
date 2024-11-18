@@ -3,14 +3,30 @@
 import React from "react";
 import Image from "next/image";
 
-export default function ContentItems() {
+export interface List {
+  key: number;
+  src: string;
+  title: string;
+  itemsPrice: number;
+  point: number;
+  maxCount: number;
+  userCount: number;
+  date: string;
+  company: string;
+}
+
+interface Props {
+  Data: List[];
+}
+
+export default function ContentItems({ Data }: Props) {
   return (
     <div className="w-full flex items-center justify-center ">
       <div className="grid grid-cols-2 gap-2 sm:gap-6 md:gap-8 lg:gap-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 px-5">
-        {LIST.map((item) => (
+        {Data.map((item) => (
           <button
             key={item.key}
-            className="max-w-[240px] p-2 text-left border-white shadow-lg shadow-blue-200/50 rounded-md hover:text-black text-gray-500 group"
+            className="max-w-[240px] p-2 text-left bg-white border-white shadow-lg shadow-blue-200/50 rounded-md hover:text-black text-gray-500 group"
           >
             <div>
               <div
@@ -19,7 +35,7 @@ export default function ContentItems() {
                 <p className="absolute top-0 left-0 bg-red-500 text-white font-semibold text-sm px-2 rounded-lg rounded-bl-none rounded-tr-none z-10">
                   {item.date}
                 </p>
-                <div className="blur-xs group-hover:blur-none ">
+                <div>
                   <Image
                     src={item.src}
                     alt="banner"
@@ -72,105 +88,3 @@ export default function ContentItems() {
     </div>
   );
 }
-
-const LIST = [
-  {
-    key: 0,
-    src: "/images/test/t2.png",
-    title: "칠초 무릎담요 극세사 캠핑 비행기",
-    itemsPrice: 8900,
-    point: 500,
-    maxCount: 30,
-    userCount: 0,
-    date: "3일 남음",
-    company: "N",
-  },
-  {
-    key: 1,
-    src: "/images/test/t2.png",
-    title: "칠초 무릎담요 극세사 캠핑 비행기",
-    itemsPrice: 8900,
-    point: 500,
-    maxCount: 30,
-    userCount: 0,
-    date: "3일 남음",
-    company: "N",
-  },
-  {
-    key: 2,
-    src: "/images/test/t2.png",
-    title: "칠초 무릎담요 극세사 캠핑 비행기",
-    itemsPrice: 8900,
-    point: 500,
-    maxCount: 30,
-    userCount: 0,
-    date: "3일 남음",
-    company: "C",
-  },
-  {
-    key: 3,
-    src: "/images/test/t2.png",
-    title: "칠초 무릎담요 극세사 캠핑 비행기",
-    itemsPrice: 8900,
-    point: 500,
-    maxCount: 30,
-    userCount: 0,
-    date: "3일 남음",
-    company: "N",
-  },
-  {
-    key: 4,
-    src: "/images/test/t2.png",
-    title: "칠초 무릎담요 극세사 캠핑 비행기",
-    itemsPrice: 8900,
-    point: 500,
-    maxCount: 30,
-    userCount: 0,
-    date: "3일 남음",
-    company: "E",
-  },
-  {
-    key: 5,
-    src: "/images/test/t2.png",
-    title: "칠초 무릎담요 극세사 캠핑 비행기",
-    itemsPrice: 8900,
-    point: 500,
-    maxCount: 30,
-    userCount: 0,
-    date: "3일 남음",
-    company: "N",
-  },
-  {
-    key: 6,
-    src: "/images/test/t2.png",
-    title: "칠초 무릎담요 극세사 캠핑 비행기",
-    itemsPrice: 8900,
-    point: 500,
-    maxCount: 30,
-    userCount: 0,
-    date: "3일 남음",
-    company: "C",
-  },
-  {
-    key: 7,
-    src: "/images/test/t2.png",
-    title: "칠초 무릎담요 극세사 캠핑 비행기",
-    itemsPrice: 8900,
-    point: 500,
-    maxCount: 30,
-    userCount: 0,
-    date: "3일 남음",
-    company: "C",
-  },
-  {
-    key: 8,
-    src: "/images/test/t2.png",
-    title: "칠초 무릎담요 극세사 캠핑 비행기",
-    itemsPrice: 8900,
-    point: 500,
-    maxCount: 30,
-    userCount: 0,
-    date: "3일 남음",
-    company: "C",
-  },
-];

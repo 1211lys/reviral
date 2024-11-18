@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { Noto_Sans } from "next/font/google";
 import "./globals.css";
-import NavMenuList from "./components/NavMenuList";
+
 import Footer from "./components/common/Footer";
+import Nav from "./components/common/Nav";
 
 const notoSans = Noto_Sans({
   subsets: ["latin"],
@@ -22,9 +23,8 @@ export default function RootLayout({
   return (
     <html lang="en" className="font-sans">
       <body className={`${notoSans.variable} antialiased`}>
-        <div className="w-full flex flex-col sm:justify-center sm:items-center">
-          <NavMenuList />
-        </div>
+        <Nav />
+
         {children}
         <Footer />
       </body>

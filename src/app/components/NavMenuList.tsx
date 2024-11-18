@@ -1,14 +1,23 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import MobileMenuButton from "./MobileMenuButton";
+import { useRouter } from "next/navigation";
 
 const LIST = [
-  { key: 0, title: "포인트", src: "/images/point.png" },
-  { key: 1, title: "My 캠페인", src: "/images/campaign.png" },
-  { key: 2, title: "로그인", src: "" },
+  { key: 0, title: "포인트", src: "/images/point.png", to: "/point" },
+  { key: 1, title: "My 캠페인", src: "/images/campaign.png", to: "/campaign" },
+  { key: 2, title: "로그인", src: "", to: "/login" },
 ];
 
 export default function NavMenuList() {
+  const router = useRouter();
+
+  const handleClick = (to: string) => {
+    router.push(to);
+  };
+
   return (
     <div className="w-full flex justify-between gap-4 p-4 sm:w-screen sm:max-w-[1440px]">
       <div className="flex gap-4">
@@ -23,7 +32,11 @@ export default function NavMenuList() {
       <MobileMenuButton LIST={LIST} />
       <div className="hidden sm:flex sm:gap-8">
         {LIST.map((item) => (
-          <button key={item.key} className="hover:text-blue-500">
+          <button
+            key={item.key}
+            className="hover:text-blue-500"
+            onClick={() => handleClick(item.to)}
+          >
             <div className="flex items-center gap-2">
               {item.src === "" ? (
                 <></>
