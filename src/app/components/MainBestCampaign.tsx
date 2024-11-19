@@ -41,7 +41,7 @@ const BEST_LIST = [
 export default function MainBestCampaign() {
   return (
     <div className="py-10 flex flex-col items-center justify-center w-full">
-      <h1 className="font-bold text-3xl mb-10">베스트 켐페인</h1>
+      <h1 className="font-bold text-2xl sm:text-3xl mb-10">베스트 켐페인</h1>
       {BEST_LIST.map((item) => (
         <button
           key={item.key}
@@ -69,7 +69,7 @@ export default function MainBestCampaign() {
             </h1>
           </div>
           <div className="max-w-[144px] min-w-[40px] flex-shrink-0 text-right flex items-center justify-center">
-            <BestCampaignSvg className="fill-current text-[#000] group-hover:text-blue-500" />
+            <BestCampaignSvg className="fill-current text-[#000] group-hover:text-blue-500 " />
           </div>
         </button>
       ))}
