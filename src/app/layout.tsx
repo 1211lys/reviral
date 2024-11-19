@@ -4,6 +4,7 @@ import "./globals.css";
 
 import Footer from "./components/common/Footer";
 import Nav from "./components/common/Nav";
+import Providers from "./lib/Providers";
 
 const notoSans = Noto_Sans({
   subsets: ["latin"],
@@ -23,10 +24,11 @@ export default function RootLayout({
   return (
     <html lang="en" className="font-sans">
       <body className={`${notoSans.variable} antialiased`}>
-        <Nav />
-
-        {children}
-        <Footer />
+        <Providers>
+          <Nav />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );
