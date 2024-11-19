@@ -1,9 +1,27 @@
-import axios from "axios";
+import axios, { InternalAxiosRequestConfig } from "axios";
 
-const axiosInstance = axios.create({
-  baseURL: "http://localhost:3001",
-  timeout: 1000,
-  headers: { "X-Custom-Header": "foobar" },
+const instance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
 });
 
-export default axiosInstance;
+instance.interceptors.request.use(
+  (config: InternalAxiosRequestConfig) => {
+    return {
+      ...config,
+    };
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+instance.interceptors.response.use(
+  async (response) => {
+    return response;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+export default instance;
