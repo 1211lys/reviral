@@ -1,49 +1,45 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import MenuSvg from "../../../public/assets/MenuSvg";
-import { useRouter } from "next/navigation";
-
-interface ListItem {
-  key: number;
-  title: string;
-  src: string;
-  to: string;
-}
+import { MenuItem } from "@/types/common";
 
 interface Props {
-  LIST: ListItem[];
+  NAV_LIST: MenuItem[];
+  isMenuOpen: boolean;
+  toggleMenu: () => void;
+  menuRef: React.RefObject<HTMLDivElement>;
+  buttonRef: React.RefObject<HTMLButtonElement>;
+  onMobileItemClick: (to: string) => void;
 }
 
-export default function MobileMenuButton({ LIST }: Props) {
-  const [isCheck, setIsCheck] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
-  const router = useRouter();
-
-  const handleClick = (to: string) => {
-    router.push(to);
-    setIsCheck(false);
-  };
-
+export default function MobileMenuButton({
+  NAV_LIST,
+  isMenuOpen,
+  toggleMenu,
+  menuRef,
+  buttonRef,
+  onMobileItemClick,
+}: Props) {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
+        isMenuOpen &&
         menuRef.current &&
         !menuRef.current.contains(event.target as Node) &&
         buttonRef.current &&
         !buttonRef.current.contains(event.target as Node)
       ) {
-        setIsCheck(false);
+        toggleMenu(); // 메뉴 닫기
       }
     };
 
     document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
-
-  const toggleMenu = () => setIsCheck((prev) => !prev);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen, toggleMenu, menuRef, buttonRef]);
 
   return (
     <>
@@ -55,18 +51,18 @@ export default function MobileMenuButton({ LIST }: Props) {
         <MenuSvg className="fill-current text-[#80A1EA] group-hover:text-blue-500" />
       </button>
 
-      {isCheck && (
+      {isMenuOpen && (
         <div
           ref={menuRef}
           className="absolute top-20 right-3 bg-white shadow-lg p-2 rounded-xl border border-gray-300 z-50"
         >
-          {LIST.map((item, index) => (
+          {NAV_LIST.map((item, index) => (
             <button
               key={item.key}
               className={`flex ${
-                index !== LIST.length - 1 ? "mb-4" : ""
+                index !== NAV_LIST.length - 1 ? "mb-4" : ""
               } hover:text-blue-500 group`}
-              onClick={() => handleClick(item.to)}
+              onClick={() => onMobileItemClick(item.to)}
             >
               <div className="flex items-center gap-4 p-2">
                 <Image

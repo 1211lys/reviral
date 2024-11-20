@@ -4,14 +4,25 @@ import React from "react";
 import Image from "next/image";
 import MobileMenuButton from "./MobileMenuButton";
 import { useRouter } from "next/navigation";
+import { MenuItem } from "@/types/common";
 
-const LIST = [
-  { key: 0, title: "포인트", src: "/images/point.png", to: "/point" },
-  { key: 1, title: "My 캠페인", src: "/images/campaign.png", to: "/campaign" },
-  { key: 2, title: "로그인", src: "/images/login.png", to: "/login" },
-];
+interface Props {
+  NAV_LIST: MenuItem[];
+  isMenuOpen: boolean;
+  toggleMenu: () => void;
+  menuRef: React.RefObject<HTMLDivElement>;
+  buttonRef: React.RefObject<HTMLButtonElement>;
+  onMobileItemClick: (to: string) => void;
+}
 
-export default function NavMenuList() {
+export default function NavMenuList({
+  NAV_LIST,
+  isMenuOpen,
+  toggleMenu,
+  menuRef,
+  buttonRef,
+  onMobileItemClick,
+}: Props) {
   const router = useRouter();
 
   const handleClick = (to: string) => {
@@ -29,9 +40,16 @@ export default function NavMenuList() {
           <h2 className="text-sm">세상의 모든 리뷰</h2>
         </div>
       </div>
-      <MobileMenuButton LIST={LIST} />
+      <MobileMenuButton
+        NAV_LIST={NAV_LIST}
+        isMenuOpen={isMenuOpen}
+        toggleMenu={toggleMenu}
+        menuRef={menuRef}
+        buttonRef={buttonRef}
+        onMobileItemClick={onMobileItemClick}
+      />
       <div className="hidden sm:flex sm:gap-8">
-        {LIST.map((item) => (
+        {NAV_LIST.map((item) => (
           <button
             key={item.key}
             className="hover:text-blue-500 group"
