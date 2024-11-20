@@ -10,6 +10,7 @@ export function useNav(menuList: { key: number; to: string }[]) {
   const buttonRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
+    setActiveKey(null);
     const activeItem = menuList.find((item) => item.to === pathname);
     if (activeItem) setActiveKey(activeItem.key);
   }, [pathname, menuList]);

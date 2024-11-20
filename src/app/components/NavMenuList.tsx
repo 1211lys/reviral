@@ -3,8 +3,8 @@
 import React from "react";
 import Image from "next/image";
 import MobileMenuButton from "./MobileMenuButton";
-import { useRouter } from "next/navigation";
 import { MenuItem } from "@/types/common";
+import { useNav } from "@/hooks/useNav";
 
 interface Props {
   NAV_LIST: MenuItem[];
@@ -23,11 +23,7 @@ export default function NavMenuList({
   buttonRef,
   onMobileItemClick,
 }: Props) {
-  const router = useRouter();
-
-  const handleClick = (to: string) => {
-    router.push(to);
-  };
+  const { handleClick } = useNav(NAV_LIST);
 
   return (
     <div className="w-full flex justify-between gap-4 p-4 sm:w-screen sm:max-w-[1440px]">
@@ -53,7 +49,7 @@ export default function NavMenuList({
           <button
             key={item.key}
             className="hover:text-blue-500 group"
-            onClick={() => handleClick(item.to)}
+            onClick={() => handleClick(item.key, item.to)}
           >
             <div className="flex items-center gap-2">
               <Image
