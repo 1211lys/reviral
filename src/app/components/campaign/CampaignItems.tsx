@@ -111,7 +111,7 @@ export default function CampaignItems() {
           );
         })}
       </div>
-      <div className="w-full lg:max-w-[30%] m-auto lg:m-0 mt-8 flex justify-center lg:items-start">
+      <div className="w-full lg:max-w-[30%] min-w-[400px] m-auto lg:m-0 mt-8 flex justify-center lg:items-start">
         <UserPointInfo />
       </div>
     </div>

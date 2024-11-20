@@ -1,7 +1,13 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
+import Modal from "./Modal";
+import { useModal } from "@/hooks/useModal";
 
 export default function UserPointInfo() {
+  const { isOpen, openModal, closeModal } = useModal();
+
   return (
     <div className="bg-white mx-4 max-w-[400px] w-full lg:mt-8 lg:mx-0 p-4 sm:p-8 border rounded-lg shadow-sm transition duration-200">
       <h1 className="font-bold text-2xl">홍길동님</h1>
@@ -24,7 +30,10 @@ export default function UserPointInfo() {
           포인트 잔액
         </div>
         <div className="text-3xl">15,000원</div>
-        <button className="bg-blue-700 py-2 rounded-md text-xl hover:bg-blue-800 flex gap-2 items-center justify-center group">
+        <button
+          className="bg-blue-700 py-2 rounded-md text-xl hover:bg-blue-800 flex gap-2 items-center justify-center group"
+          onClick={openModal}
+        >
           <Image
             className="transition-transform duration-300 ease-in-out transform group-hover:rotate-180"
             src="/images/change.png"
@@ -46,6 +55,9 @@ export default function UserPointInfo() {
         계정 설정
         <span className="text-sm">내정보, 비밀번호 변경, 계좌 {">"}</span>
       </button>
+      {isOpen && (
+        <Modal isOpen={isOpen} openModal={openModal} closeModal={closeModal} />
+      )}
     </div>
   );
 }

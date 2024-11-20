@@ -28,6 +28,7 @@ export default function RootLayout({
           <Nav />
           {children}
           <Footer />
+          <div id="portal" />
         </Providers>
       </body>
     </html>
