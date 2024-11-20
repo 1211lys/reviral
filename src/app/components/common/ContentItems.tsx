@@ -21,7 +21,7 @@ interface Props {
 
 export default function ContentItems({ Data }: Props) {
   return (
-    <div className="w-full flex items-center justify-center ">
+    <div className="w-full flex items-center justify-center  ">
       <div className="grid grid-cols-2 gap-2 sm:gap-6 md:gap-8 lg:gap-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 px-5">
         {Data.map((item) => (
           <button

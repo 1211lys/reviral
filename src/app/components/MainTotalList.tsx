@@ -19,7 +19,7 @@ interface Props {
 
 export default function MainTotalList({ Data }: Props) {
   return (
-    <div className="py-20 flex flex-col items-center justify-center w-full bg-bgBLue">
+    <div className="py-20 flex flex-col items-center justify-center w-full bg-bgBLue border-b-2 border-gray-200">
       <h1 className="font-bold text-2xl sm:text-3xl text-blue-500 mb-10">
         <span className="font-normal text-black  ">이런 </span>
         켐페인
