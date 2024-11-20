@@ -8,7 +8,7 @@ import { useRouter } from "next/navigation";
 const LIST = [
   { key: 0, title: "포인트", src: "/images/point.png", to: "/point" },
   { key: 1, title: "My 캠페인", src: "/images/campaign.png", to: "/campaign" },
-  { key: 2, title: "로그인", src: "", to: "/login" },
+  { key: 2, title: "로그인", src: "/images/login.png", to: "/login" },
 ];
 
 export default function NavMenuList() {
@@ -34,20 +34,17 @@ export default function NavMenuList() {
         {LIST.map((item) => (
           <button
             key={item.key}
-            className="hover:text-blue-500"
+            className="hover:text-blue-500 group"
             onClick={() => handleClick(item.to)}
           >
             <div className="flex items-center gap-2">
-              {item.src === "" ? (
-                <></>
-              ) : (
-                <Image
-                  src={`${item.src}`}
-                  width={24}
-                  height={24}
-                  alt={"logo"}
-                />
-              )}
+              <Image
+                className={`transition-transform duration-700 ease-in-out transform group-hover:rotate-360`}
+                src={`${item.src}`}
+                width={24}
+                height={24}
+                alt={"logo"}
+              />
               <div className="font-semibold text-sm">{item.title}</div>
             </div>
           </button>

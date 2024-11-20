@@ -24,6 +24,7 @@ export default function MobileMenuButton({ LIST }: Props) {
 
   const handleClick = (to: string) => {
     router.push(to);
+    setIsCheck(false);
   };
 
   useEffect(() => {
@@ -64,18 +65,18 @@ export default function MobileMenuButton({ LIST }: Props) {
               key={item.key}
               className={`flex ${
                 index !== LIST.length - 1 ? "mb-4" : ""
-              } hover:text-blue-500`}
+              } hover:text-blue-500 group`}
               onClick={() => handleClick(item.to)}
             >
               <div className="flex items-center gap-4 p-2">
-                {item.src === "" ? null : (
-                  <Image
-                    src={`${item.src}`}
-                    width={24}
-                    height={24}
-                    alt="logo"
-                  />
-                )}
+                <Image
+                  className={`transition-transform duration-700 ease-in-out transform group-hover:rotate-360`}
+                  src={`${item.src}`}
+                  width={24}
+                  height={24}
+                  alt="logo"
+                />
+
                 <div
                   className={`${
                     item.src === "" ? "pl-[24px] ml-4" : ""

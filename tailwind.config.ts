@@ -31,6 +31,9 @@ export default {
       backgroundImage: {
         gradationBlue: "linear-gradient(117deg, #94C2FD -1%, #6D9BFF 96%)",
       },
+      rotate: {
+        "360": "360deg",
+      },
     },
   },
   plugins: [],

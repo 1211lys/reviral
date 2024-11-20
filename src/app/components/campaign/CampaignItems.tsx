@@ -68,9 +68,9 @@ export default function CampaignItems() {
           return (
             <div
               key={item.key}
-              className="border rounded-lg p-2 sm:p-4 shadow-sm hover:shadow-md transition duration-200 max-w-[1240px] mt-8 last-of-type:mb-8 bg-white w-full"
+              className="border rounded-lg p-4 sm:p-4 shadow-sm hover:shadow-md transition duration-200 max-w-[1240px] mt-8 last-of-type:mb-8 bg-white w-full"
             >
-              <div className="font-bold">
+              <div className="font-bold mb-2 text-2xl">
                 캠페인{" "}
                 <span className={`${statusInfo.color}`}>
                   {statusInfo.label}
