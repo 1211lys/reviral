@@ -4,10 +4,11 @@ import React from "react";
 import Image from "next/image";
 import Modal from "./Modal";
 import { useModal } from "@/hooks/useModal";
+import { useRouter } from "next/navigation";
 
 export default function UserPointInfo() {
   const { isOpen, openModal, closeModal } = useModal();
-
+  const router = useRouter();
   return (
     <div className="bg-white mx-4 max-w-[400px] w-full lg:mt-8 lg:mx-0 p-4 sm:p-8 border rounded-lg shadow-sm transition duration-200">
       <h1 className="font-bold text-2xl">홍길동님</h1>
@@ -44,7 +45,10 @@ export default function UserPointInfo() {
           포인트 전환
         </button>
       </div>
-      <button className="bg-black text-gray-200 py-3 w-full rounded-xl font-bold text-xl flex items-center justify-center gap-2 hover:text-white group">
+      <button
+        onClick={() => router.push("account")}
+        className="bg-black text-gray-200 py-3 w-full rounded-xl font-bold text-xl flex items-center justify-center gap-2 hover:text-white group"
+      >
         <Image
           className="transition-transform duration-700 ease-in-out transform group-hover:rotate-180"
           src="/images/setting.png"

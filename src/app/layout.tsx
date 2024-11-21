@@ -26,7 +26,7 @@ export default function RootLayout({
       <body className={`${notoSans.variable} antialiased`}>
         <Providers>
           <Nav />
-          {children}
+          <div className="min-h-[calc(100vh-8rem)]">{children}</div>
           <Footer />
           <div id="portal" />
         </Providers>

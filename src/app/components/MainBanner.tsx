@@ -25,7 +25,7 @@ const BANNER_BUTTON_LIST = [
 export default function MainBanner() {
   return (
     <>
-      <div className="w-screen border-t-2 border-gray-200 py-10 relative">
+      <div className="w-screen py-10 relative">
         <div className="banner:hidden">
           <div className="absolute bottom-10 right-[5%] w-10 h-10 bg-red-600 z-10">
             인덱스

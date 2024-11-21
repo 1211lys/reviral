@@ -2,25 +2,33 @@ import React from "react";
 import UserPointInfo from "../common/UserPointInfo";
 
 // 상태에 따른 설명 및 스타일 정의
-const STATUS_MAP: Record<number, { label: string; color: string }> = {
+const STATUS_MAP: Record<
+  number,
+  { label: string; title: string; color: string }
+> = {
   0: {
     label: "참여 진행",
+    title: "참여 진행",
     color: "text-yellow-500",
   },
   1: {
     label: "캠페인 진행",
+    title: "진행",
     color: "text-green-500",
   },
   2: {
     label: "후기 작성",
+    title: "후기 작성",
     color: "text-orange-500",
   },
   3: {
     label: "캠페인 검수",
+    title: "검수",
     color: "text-red-500",
   },
   4: {
     label: "캠페인 완료",
+    title: "완료",
     color: "text-blue-500",
   },
 };
@@ -70,10 +78,10 @@ export default function CampaignItems() {
               key={item.key}
               className="border rounded-lg p-4 sm:p-4 shadow-sm hover:shadow-md transition duration-200 max-w-[1240px] mt-8 last-of-type:mb-8 bg-white w-full"
             >
-              <div className="font-bold mb-2 text-2xl">
+              <div className="font-bold mb-2 text-xl">
                 캠페인{" "}
                 <span className={`${statusInfo.color}`}>
-                  {statusInfo.label}
+                  {statusInfo.title}
                 </span>
               </div>
               <div className="text-sm text-gray-400">{item.timeLine}</div>
@@ -111,7 +119,7 @@ export default function CampaignItems() {
           );
         })}
       </div>
-      <div className="w-full lg:max-w-[30%] min-w-[400px] m-auto lg:m-0 mt-8 flex justify-center lg:items-start">
+      <div className="w-full lg:max-w-[30%] min-w-[360px] m-auto lg:m-0 mt-8 flex justify-center lg:items-start">
         <UserPointInfo />
       </div>
     </div>

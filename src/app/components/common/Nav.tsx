@@ -18,7 +18,7 @@ export default function Nav() {
   };
 
   return (
-    <div>
+    <div className="w-full border-b-2 border-gray-200">
       <div className="w-full flex flex-col sm:justify-center sm:items-center">
         <NavMenuList
           NAV_LIST={NAV_LIST}
