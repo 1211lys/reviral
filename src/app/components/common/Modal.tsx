@@ -1,7 +1,6 @@
 "use client";
 
-import { useModal } from "@/hooks/useModal";
-import React, { useState } from "react";
+import React from "react";
 
 interface Props {
   isOpen: boolean;
@@ -9,7 +8,7 @@ interface Props {
   closeModal: () => void;
 }
 
-export default function Modal({ isOpen, openModal, closeModal }: Props) {
+export default function Modal({ isOpen, closeModal }: Props) {
   return (
     <div>
       {isOpen && (
