@@ -9,10 +9,10 @@ import "swiper/css/navigation";
 import "swiper/css/scrollbar";
 
 const IMAGE_LIST = [
-  { key: 0, src: "/images/1.jpeg", color: "bg-red-500" },
-  { key: 1, src: "/images/2.jpeg", color: "bg-blue-500" },
-  { key: 2, src: "/images/3.jpeg", color: "bg-green-500" },
-  { key: 3, src: "/images/4.jpeg", color: "bg-yellow-500" },
+  { key: 0, src: "/images/1.png", color: "bg-red-500" },
+  { key: 1, src: "/images/1.png", color: "bg-blue-500" },
+  { key: 2, src: "/images/1.png", color: "bg-green-500" },
+  { key: 3, src: "/images/1.png", color: "bg-yellow-500" },
 ];
 
 const BANNER_BUTTON_LIST = [

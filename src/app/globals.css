@@ -18,3 +18,7 @@ body {
   -ms-overflow-style: none; /* Internet Explorer 10+ */
   scrollbar-width: none; /* Firefox */
 }
+
+input {
+  box-shadow: none; /* 기본 포커스 그림자 제거 */
+}
