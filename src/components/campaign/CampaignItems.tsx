@@ -70,13 +70,13 @@ const LIST = [
 ];
 
 export default function CampaignItems() {
-  // useEffect(() => {
-  //   GetCampaignData()
-  //     .then(({ data }) => {
-  //       console.log(data);
-  //     })
-  //     .catch(console.error);
-  // }, []);
+  useEffect(() => {
+    GetCampaignData()
+      .then(({ data }) => {
+        console.log(data);
+      })
+      .catch(console.error);
+  }, []);
 
   return (
     <div className="flex flex-col-reverse lg:flex-row w-full max-w-[1440px]">
