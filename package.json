@@ -2,14 +2,11 @@
   "name": "reviral",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://1211lys.github.io/reviral/",
   "scripts": {
     "dev": "next dev",
-    "build": "next build && next export",
+    "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "predeploy": "npm run build",
-    "deploy": "touch out/.nojekyll && gh-pages -d out --dotfiles"
+    "lint": "next lint"
   },
   "dependencies": {
     "@svgr/webpack": "^8.1.0",
@@ -23,7 +20,6 @@
     "@tiptap/react": "^2.10.0",
     "@tiptap/starter-kit": "^2.10.0",
     "axios": "^1.7.7",
-    "gh-pages": "^6.2.0",
     "next": "15.0.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
