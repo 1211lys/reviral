@@ -3,7 +3,7 @@ import Index from "../components/signup/index";
 
 export default function page() {
   return (
-    <div className=" p-4 w-screen h-screen fixed top-0 left-0 bg-white overflow-scroll">
+    <div className=" p-4 w-screen h-screen fixed top-0 left-0 bg-white overflow-scroll ">
       <Index />
     </div>
   );

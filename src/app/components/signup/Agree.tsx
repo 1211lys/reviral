@@ -115,12 +115,12 @@ export default function Agree({
       <div>
         <button
           className="flex items-center gap-[12px] mb-4"
-          onClick={() => handleIndividualCheck("eventAgree")}
+          onClick={() => handleIndividualCheck("isEvent")}
         >
           <div>
             <CheckSvg
               className={`fill-current ${
-                signupData.eventAgree ? "text-[#5E87E3]" : "text-[#A6A6A6]"
+                signupData.isEvent ? "text-[#5E87E3]" : "text-[#A6A6A6]"
               }`}
             />
           </div>

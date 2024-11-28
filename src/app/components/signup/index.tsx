@@ -7,7 +7,16 @@ import Agree from "./Agree";
 import Signup from "./Signup";
 
 export default function index() {
-  const { signupData, handleAllCheck, handleIndividualCheck } = useSignup();
+  const {
+    signupData,
+    handleAllCheck,
+    handleIndividualCheck,
+    handleInputChange,
+    handleBlur,
+    validationErrors,
+    validateField,
+    handleGender,
+  } = useSignup();
 
   const [pageCount, setPageCount] = useState(0);
 
@@ -29,7 +38,16 @@ export default function index() {
           setPageCount={setPageCount}
         />
       )}
-      {pageCount === 1 && <Signup />}
+      {pageCount === 1 && (
+        <Signup
+          signupData={signupData}
+          handleInputChange={handleInputChange}
+          handleBlur={handleBlur}
+          validationErrors={validationErrors}
+          handleGender={handleGender}
+          validateField={validateField}
+        />
+      )}
     </div>
   );
 }
