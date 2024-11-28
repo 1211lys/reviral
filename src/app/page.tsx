@@ -1,7 +1,7 @@
-import MainBanner from "./components/MainBanner";
-import MainBestCampaign from "./components/MainBestCampaign";
-import MainCampaign from "./components/MainCampaign";
-import MainTotalList from "./components/MainTotalList";
+import MainBanner from "@/components/MainBanner";
+import MainBestCampaign from "@/components/MainBestCampaign";
+import MainCampaign from "@/components/MainCampaign";
+import MainTotalList from "@/components/MainTotalList";
 
 const LIST = [
   {

@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import React, { useEffect } from "react";
-import MenuSvg from "../../../public/assets/MenuSvg";
+
 import { MenuItem } from "@/types/common";
+import MenuSvg from "../../public/assets/MenuSvg";
 
 interface Props {
   NAV_LIST: MenuItem[];

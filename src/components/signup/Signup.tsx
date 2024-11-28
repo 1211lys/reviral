@@ -2,13 +2,13 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import UserSvg from "../../../../public/assets/signup/UserSvg";
-import PwSvg from "../../../../public/assets/signup/PwSvg";
-import GenderSvg from "../../../../public/assets/signup/GenderSvg";
-import PhoneSvg from "../../../../public/assets/signup/PhoneSvg";
-import AddressSvg from "../../../../public/assets/signup/AddressSvg";
-import NaverSvg from "../../../../public/assets/signup/NaverSvg";
-import CoupangSvg from "../../../../public/assets/signup/CoupangSvg";
+import UserSvg from "../../../public/assets/signup/UserSvg";
+import PwSvg from "../../../public/assets/signup/PwSvg";
+import GenderSvg from "../../../public/assets/signup/GenderSvg";
+import PhoneSvg from "../../../public/assets/signup/PhoneSvg";
+import AddressSvg from "../../../public/assets/signup/AddressSvg";
+import NaverSvg from "../../../public/assets/signup/NaverSvg";
+import CoupangSvg from "../../../public/assets/signup/CoupangSvg";
 import {
   PersonalInfoKeys,
   SignupData,

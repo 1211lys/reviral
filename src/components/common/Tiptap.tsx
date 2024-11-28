@@ -5,9 +5,10 @@ import TextAlign from "@tiptap/extension-text-align";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import React, { useEffect } from "react";
+import { Editor } from "@tiptap/core"; // Import Editor type
 
 // MenuBar component for text formatting controls
-const MenuBar = ({ editor }: any) => {
+const MenuBar = ({ editor }: { editor: Editor | null }) => {
   if (!editor) {
     return null;
   }
@@ -133,7 +134,8 @@ const MenuBar = ({ editor }: any) => {
   );
 };
 
-export default () => {
+// Named component for better debugging and to fix export warning
+const TiptapEditor = () => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -152,21 +154,7 @@ export default () => {
         Oh mother dear we’re not the fortunate ones<br>
         And devs, they wanna have fun<br>
         Oh devs just want to have fun</p>
-      <p style="text-align:center">
-        The phone rings in the middle of the night<br>
-        My father yells, "What you gonna do with your life?"<br>
-        Oh daddy dear, you know you’re still number one<br>
-        But <s>girls</s>devs, they wanna have fun<br>
-        Oh devs just want to have fun
-      </p>
-      <p style="text-align:center">
-        That’s all they really want<br>
-        Some fun<br>
-        When the working day is done<br>
-        Oh devs, they wanna have fun<br>
-        Oh devs just wanna have fun<br>
-        (devs, they wanna, wanna have fun, devs wanna have)
-      </p>
+      <!-- more content -->
     `,
   });
 
@@ -180,7 +168,6 @@ export default () => {
 
     editor.on("update", handleUpdate);
 
-    // Cleanup event listener on unmount
     return () => {
       editor.off("update", handleUpdate);
     };
@@ -198,3 +185,5 @@ export default () => {
     </div>
   );
 };
+
+export default TiptapEditor; // Export named function

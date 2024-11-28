@@ -1,5 +1,5 @@
 import React from "react";
-import BestCampaignSvg from "../../../public/assets/BestCampaignSvg";
+import BestCampaignSvg from "../../public/assets/BestCampaignSvg";
 
 const BEST_LIST = [
   {

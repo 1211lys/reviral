@@ -1,5 +1,5 @@
+import Tiptap from "@/components/common/Tiptap";
 import React from "react";
-import Tiptap from "../components/common/Tiptap";
 
 // 🔥크팡 실배송 리뷰체험단🔥
 

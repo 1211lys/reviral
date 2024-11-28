@@ -6,7 +6,7 @@ import { useSignup } from "@/hooks/useSignup";
 import Agree from "./Agree";
 import Signup from "./Signup";
 
-export default function index() {
+export default function Index() {
   const {
     signupData,
     handleAllCheck,
@@ -18,7 +18,7 @@ export default function index() {
     handleGender,
   } = useSignup();
 
-  const [pageCount, setPageCount] = useState(0);
+  const [pageCount, setPageCount] = useState<number>(0);
 
   return (
     <div className="flex flex-col items-center w-full p-10">
