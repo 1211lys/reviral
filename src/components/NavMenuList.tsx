@@ -4,7 +4,6 @@ import React from "react";
 import Image from "next/image";
 import MobileMenuButton from "./MobileMenuButton";
 import { MenuItem } from "@/types/common";
-import { useNav } from "@/hooks/useNav";
 
 interface Props {
   NAV_LIST: MenuItem[];
@@ -12,7 +11,8 @@ interface Props {
   toggleMenu: () => void;
   menuRef: React.RefObject<HTMLDivElement>;
   buttonRef: React.RefObject<HTMLButtonElement>;
-  onMobileItemClick: (to: string) => void;
+
+  handleNavMenuStatus: (key: number, to: string) => void;
 }
 
 export default function NavMenuList({
@@ -21,10 +21,9 @@ export default function NavMenuList({
   toggleMenu,
   menuRef,
   buttonRef,
-  onMobileItemClick,
-}: Props) {
-  const { handleClick } = useNav(NAV_LIST);
 
+  handleNavMenuStatus,
+}: Props) {
   return (
     <div className="w-full flex justify-between gap-4 p-4 sm:w-screen sm:max-w-[1440px]">
       <div className="flex gap-4">
@@ -42,14 +41,14 @@ export default function NavMenuList({
         toggleMenu={toggleMenu}
         menuRef={menuRef}
         buttonRef={buttonRef}
-        onMobileItemClick={onMobileItemClick}
+        handleNavMenuStatus={handleNavMenuStatus}
       />
       <div className="hidden sm:flex sm:gap-8">
         {NAV_LIST.map((item) => (
           <button
             key={item.key}
             className="hover:text-blue-500 group"
-            onClick={() => handleClick(item.key, item.to)}
+            onClick={() => handleNavMenuStatus(item.key, item.to)}
           >
             <div className="flex items-center gap-2">
               <Image

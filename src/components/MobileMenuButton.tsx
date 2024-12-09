@@ -12,7 +12,8 @@ interface Props {
   toggleMenu: () => void;
   menuRef: React.RefObject<HTMLDivElement>;
   buttonRef: React.RefObject<HTMLButtonElement>;
-  onMobileItemClick: (to: string) => void;
+
+  handleNavMenuStatus: (key: number, to: string) => void;
 }
 
 export default function MobileMenuButton({
@@ -21,7 +22,8 @@ export default function MobileMenuButton({
   toggleMenu,
   menuRef,
   buttonRef,
-  onMobileItemClick,
+
+  handleNavMenuStatus,
 }: Props) {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -63,7 +65,7 @@ export default function MobileMenuButton({
               className={`flex ${
                 index !== NAV_LIST.length - 1 ? "mb-4" : ""
               } hover:text-blue-500 group`}
-              onClick={() => onMobileItemClick(item.to)}
+              onClick={() => handleNavMenuStatus(item.key, item.to)}
             >
               <div className="flex items-center gap-4 p-2">
                 <Image

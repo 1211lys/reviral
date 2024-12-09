@@ -1,7 +1,7 @@
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
 
-export function useNav(menuList: { key: number; to: string }[]) {
+export function useNav(menuList: { key: number; to: string | null }[]) {
   const router = useRouter();
   const pathname = usePathname();
   const [activeKey, setActiveKey] = useState<number | null>(null);
