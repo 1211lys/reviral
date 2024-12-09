@@ -21,7 +21,7 @@ export default function Index() {
   const [pageCount, setPageCount] = useState<number>(0);
 
   return (
-    <div className="flex flex-col items-center w-full p-10">
+    <div className="flex flex-col items-center justify-center w-full p-10 h-full min-h-[750px]">
       <div className="w-full max-w-[400px] mb-20">
         <Image
           src="/images/textLogo.png"

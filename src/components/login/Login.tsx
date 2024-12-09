@@ -4,12 +4,14 @@ import { PostSigninData } from "@/service/auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
+import IdPwModal from "../common/IdPwModal";
+import { useModal } from "@/hooks/useModal";
 
 export default function Login() {
   const router = useRouter();
   const [loginData, setLoginData] = useState({ loginId: "", password: "" });
   const [isError, setIsError] = useState(false);
-
+  const { isOpen, openModal, closeModal } = useModal();
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
 
@@ -49,7 +51,7 @@ export default function Login() {
   }, [loginData]);
 
   return (
-    <div className="flex flex-col items-center w-full p-10 ">
+    <div className="flex flex-col items-center justify-center w-full p-10 h-full min-h-[550px]">
       <div className="sm:border flex flex-col gap-8 w-[440px] sm:shadow-xl rounded-lg px-10 py-8 sm:py-20 my-10">
         <div className="flex gap-4">
           <div className="w-[80px] ml-6">
@@ -82,10 +84,16 @@ export default function Login() {
               계정 또는 비밀번호를 확인해주세요
             </p>
           )}
-          <button className="text-right w-full text-gray-400  hover:text-blue-500 text-xs">
+          <button
+            className="text-right w-full text-gray-400  hover:text-blue-500 text-xs"
+            onClick={openModal}
+          >
             계정을 잃어버리셨나요?
           </button>
-          <button className="text-right w-full text-gray-400  hover:text-blue-500 text-xs">
+          <button
+            className="text-right w-full text-gray-400  hover:text-blue-500 text-xs"
+            onClick={openModal}
+          >
             비밀번호를 잃어버리셨나요?
           </button>
         </div>
@@ -104,6 +112,7 @@ export default function Login() {
           </button>
         </div>
       </div>
+      <IdPwModal isOpen={isOpen} closeModal={closeModal} />
     </div>
   );
 }
