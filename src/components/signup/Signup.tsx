@@ -300,7 +300,7 @@ export default function Signup({
                     } ${signupData.gender === "" && "border-l-2"} ${
                       validationErrors.gender !== "" &&
                       "border-red-500 text-red-500"
-                    }    `}
+                    } `}
                     onClick={() => handleGender("WOMAN")}
                   >
                     여자

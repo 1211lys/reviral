@@ -20,6 +20,7 @@ export default {
       md: "768px",
       lg: "1024px",
       xl: "1280px",
+      xxl: "1440px",
       banner: "1440px",
     },
     extend: {
@@ -30,6 +31,8 @@ export default {
       },
       backgroundImage: {
         gradationBlue: "linear-gradient(117deg, #94C2FD -1%, #6D9BFF 96%)",
+        gradationListTitle:
+          "linear-gradient(287deg, #003CBE 0%, #4959E8 22%, #288DCB 50%, #5A8EFF 100%)",
       },
       rotate: {
         "360": "360deg",

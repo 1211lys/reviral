@@ -6,7 +6,7 @@ const instance = axios.create({
 
 instance.interceptors.request.use(
   (config) => {
-    const urlsNotRequiringToken = ["/login", "/signup"];
+    const urlsNotRequiringToken = ["/login", "/signup /list"];
 
     const currentUrl = config.url || "";
 

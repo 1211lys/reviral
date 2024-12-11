@@ -6,7 +6,7 @@ import {
   SigninResponse,
   SignupRequest,
   SignupResponse,
-} from "@/types/signup/signup";
+} from "@/types/signup";
 
 export const PostSignupData = (
   param: SignupRequest

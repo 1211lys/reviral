@@ -4,3 +4,8 @@ export interface MenuItem {
   src?: string;
   to: string;
 }
+
+export interface ApiErrorType {
+  code: string;
+  message: string;
+}

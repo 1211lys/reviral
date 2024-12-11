@@ -1,90 +1,191 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import { GetCampaignListResponse } from "@/types/list";
+import { GetCampaignList } from "@/service/list";
+import { useSearchParams } from "next/navigation";
 
-export interface List {
-  key: number;
-  src: string;
-  title: string;
-  itemsPrice: number;
-  point: number;
-  maxCount: number;
-  userCount: number;
-  date: string;
-  company: string;
-}
+export default function ContentItems() {
+  const [data, setData] = useState<GetCampaignListResponse | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const searchParams = useSearchParams();
 
-interface Props {
-  Data: List[];
-}
+  // 쿼리 파라미터 값 가져오기
+  const category = searchParams.get("category");
+  const platform = searchParams.get("platform");
+  const status = searchParams.get("status");
 
-export default function ContentItems({ Data }: Props) {
+  const [imgError, setImgError] = useState<{ [key: string]: boolean }>({});
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  const loadMoreRef = useRef<HTMLDivElement | null>(null);
+
+  // 데이터를 가져오는 함수
+  const fetchCampaignList = async (reset: boolean = false) => {
+    if (loading || (!hasMore && !reset)) return;
+
+    setLoading(true);
+
+    try {
+      const response = await GetCampaignList({
+        category,
+        platform,
+        status,
+        page: reset ? 0 : page,
+        size: 15,
+      });
+
+      const newData = response.data;
+
+      setData((prevData) => {
+        if (reset) {
+          // 기존 데이터 초기화 후 새로운 데이터로 교체
+          return newData;
+        }
+        return {
+          ...newData,
+          data: {
+            ...newData.data,
+            campaigns: [
+              ...(prevData?.data?.campaigns || []),
+              ...newData.data.campaigns,
+            ],
+          },
+        };
+      });
+
+      setHasMore(newData.data.campaigns.length === 15);
+      setPage((prevPage) => (reset ? 1 : prevPage + 1));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // 쿼리스트링이 변경될 때 데이터 초기화 및 새로 로드
+  useEffect(() => {
+    setData(null); // 기존 데이터 삭제
+    setPage(0); // 페이지 초기화
+    setHasMore(true); // hasMore 초기화
+    fetchCampaignList(true); // 새 데이터 로드
+  }, [category, platform, status]);
+
+  // Intersection Observer 설정
+  useEffect(() => {
+    if (loadMoreRef.current) {
+      observerRef.current = new IntersectionObserver(
+        (entries) => {
+          const entry = entries[0];
+          if (entry.isIntersecting) {
+            fetchCampaignList();
+          }
+        },
+        { threshold: 1.0 }
+      );
+
+      observerRef.current.observe(loadMoreRef.current);
+
+      return () => {
+        if (observerRef.current && loadMoreRef.current) {
+          observerRef.current.unobserve(loadMoreRef.current);
+        }
+      };
+    }
+  }, [loading, hasMore]);
+
+  // 기본 이미지 처리
+  const defaultImgUrl = "/images/logo.png";
+
+  const handleImageError = (campaignId: number) => {
+    setImgError((prevState) => ({
+      ...prevState,
+      [campaignId]: true,
+    }));
+  };
+
+  const isValidUrl = (url: string | undefined): boolean => {
+    try {
+      new URL(url!);
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  if (!data) return <div>Loading...</div>;
+
   return (
-    <div className="w-full flex items-center justify-center  ">
-      <div className="grid grid-cols-2 gap-2 sm:gap-6 md:gap-8 lg:gap-10 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 px-5">
-        {Data.map((item) => (
-          <button
-            key={item.key}
-            className="max-w-[240px] p-2 text-left bg-white border-white shadow-lg shadow-blue-200/50 rounded-md hover:text-black text-gray-500 group"
-          >
-            <div>
-              <div
-                className={`relative min-w-[115px] min-h-[65px] max-w-[230px] max-h-[130px] mb-2  `}
-              >
-                <p className="absolute top-0 left-0 bg-red-500 text-white font-semibold text-sm px-2 rounded-lg rounded-bl-none rounded-tr-none z-10">
-                  {item.date}
-                </p>
-                <div>
+    <div className="w-full flex items-start justify-center bg-bgBLue min-h-[calc(100vh-8rem)]">
+      <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 my-10">
+        {data?.data?.campaigns?.map((item) => {
+          const imgUrl =
+            isValidUrl(item.campaignImgUrl) && !imgError[item.campaignId]
+              ? item.campaignImgUrl
+              : defaultImgUrl;
+
+          return (
+            <button
+              key={item.campaignId}
+              className="max-w-[250px] text-left bg-white border-white shadow-lg rounded-md hover:text-black text-gray-500 hover:scale-105"
+            >
+              <div>
+                <div className="relative w-[250px] h-[160px]">
                   <Image
-                    src={item.src}
+                    src={imgUrl}
                     alt="banner"
-                    layout="responsive"
-                    width={500}
-                    height={300}
+                    layout="fill"
                     objectFit="cover"
+                    onError={() => handleImageError(item.campaignId)}
                     style={{
                       borderTopRightRadius: "8px",
                       borderTopLeftRadius: "8px",
                     }}
                   />
                 </div>
-              </div>
-              <div className="flex items-center mb-2">
-                {item.company === "N" ? (
-                  <div className="w-[20px] h-[20px] bg-green-400 text-white flex items-center justify-center rounded-md text-sm p-2 font-bold">
-                    N
+                <div className="flex flex-col gap-1 p-2">
+                  <div className="flex items-center">
+                    {item.campaignPlatform === "NAVER" ? (
+                      <div className="w-[24px] h-[24px] bg-green-400 text-white flex items-center justify-center rounded-md text-normal p-2 font-bold">
+                        N
+                      </div>
+                    ) : item.campaignPlatform === "COUPANG" ? (
+                      <div className="w-[24px] h-[24px] bg-red-500 text-white flex items-center justify-center rounded-md text-normal p-2 font-bold">
+                        C
+                      </div>
+                    ) : (
+                      <div className="w-[24px] h-[24px] bg-blue-400 text-white flex items-center justify-center rounded-md text-normal p-2 font-bold">
+                        E
+                      </div>
+                    )}
+                    <p className=" ml-2 text-xl font-semibold">
+                      {item.period}일 남음
+                    </p>
                   </div>
-                ) : item.company === "C" ? (
-                  <div className="w-[20px] h-[20px] bg-red-500 text-white flex items-center justify-center rounded-md text-sm p-2 font-bold">
-                    C
+                  <h1 className="text-xl text-black font-semibold overflow-hidden text-ellipsis whitespace-nowrap">
+                    {item.campaignTitle}
+                  </h1>
+                  <p className="text-lg">
+                    {item.campaignPrice.toLocaleString()}원
+                  </p>
+                  <div className="text-lg">
+                    캠페인 포인트 {item.campaignPoint.toLocaleString()}P
                   </div>
-                ) : (
-                  <div className="w-[20px] h-[20px] bg-blue-400  text-white flex items-center justify-center rounded-md text-sm p-2 font-bold">
-                    E
+                  <div className="flex flex-col justify-between mb-2">
+                    <p className="text-lg">
+                      신청 {item.joinCount} / {item.totalCount}명
+                    </p>
                   </div>
-                )}
-                <p className=" ml-2 flew-grow overflow-hidden text-ellipsis whitespace-nowrap  ">
-                  {item.title}
-                </p>
+                </div>
               </div>
-              <p className="text-lg mb-2 ">
-                상품 가격 : {item.itemsPrice.toLocaleString()}원
-              </p>
-              <div className="p-1 bg-blue-400 group-hover:bg-blue-600 rounded-md text-center text-white font-semibold text-lg mb-2">
-                {item.point} 포인트 적립
-              </div>
-              <div className="flex flex-col justify-between">
-                <p className=" text-sm">
-                  참여 인원 {"( "}
-                  {item.userCount} / {item.maxCount}
-                  {" )"}
-                </p>
-              </div>
-            </div>
-          </button>
-        ))}
+            </button>
+          );
+        })}
       </div>
+
+      <div ref={loadMoreRef} className="h-10" />
     </div>
   );
 }

@@ -1,10 +1,7 @@
 import { SignupData, SignupKeys } from "@/hooks/useSignup";
 import React from "react";
 import CheckSvg from "../../../public/assets/CheckSvg";
-import {
-  CONDITIONS_OF_SERVICE,
-  CONSENT_TO_COLLECTING,
-} from "@/types/constants/contants";
+import { CONDITIONS_OF_SERVICE, CONSENT_TO_COLLECTING } from "@/types/contants";
 
 interface Props {
   signupData: SignupData;

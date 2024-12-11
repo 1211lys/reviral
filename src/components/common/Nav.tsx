@@ -3,7 +3,7 @@
 import React, { useRef, useState } from "react";
 import NavMenuList from "../NavMenuList";
 import MainMenuList from "../MainMenuList";
-import { MAIN_MENU_LIST } from "@/types/constants/contants";
+import { MAIN_MENU_LIST } from "@/types/contants";
 import useAuth from "@/hooks/useAuth";
 
 export default function Nav() {

@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import UserPointInfo from "../common/UserPointInfo";
-import { GetCampaignData } from "@/service/campaign";
 
 // 상태에 따른 설명 및 스타일 정의
 const STATUS_MAP: Record<
@@ -70,14 +69,6 @@ const LIST = [
 ];
 
 export default function CampaignItems() {
-  useEffect(() => {
-    GetCampaignData()
-      .then(({ data }) => {
-        console.log(data);
-      })
-      .catch(console.error);
-  }, []);
-
   return (
     <div className="flex flex-col-reverse lg:flex-row w-full max-w-[1440px]">
       <div className="flex flex-col items-center justify-center px-2 sm:px-4 w-full lg:w-[70%]  ">
