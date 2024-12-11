@@ -1,7 +1,7 @@
 import { MenuItem } from "./common";
 
 export const MAIN_MENU_LIST: MenuItem[] = [
-  { key: 0, title: "홈", to: "" },
+  { key: 0, title: "홈", to: "/" },
   { key: 1, title: "오늘 오픈", to: "/list?category=today" },
   { key: 2, title: "마감 임박", to: "/list?category=deadline" },
   { key: 3, title: "당일 구매", to: "/list?category=daily" },

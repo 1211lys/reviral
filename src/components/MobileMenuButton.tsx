@@ -13,7 +13,9 @@ interface Props {
   menuRef: React.RefObject<HTMLDivElement>;
   buttonRef: React.RefObject<HTMLButtonElement>;
 
-  handleNavMenuStatus: (key: number, to: string) => void;
+  handleClick: (key: number, to: string) => void;
+  buttonRefs: React.MutableRefObject<(HTMLButtonElement | null)[]>;
+  activeKey: number | null;
 }
 
 export default function MobileMenuButton({
@@ -22,8 +24,9 @@ export default function MobileMenuButton({
   toggleMenu,
   menuRef,
   buttonRef,
-
-  handleNavMenuStatus,
+  buttonRefs,
+  activeKey,
+  handleClick,
 }: Props) {
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -65,7 +68,13 @@ export default function MobileMenuButton({
               className={`flex ${
                 index !== NAV_LIST.length - 1 ? "mb-4" : ""
               } hover:text-blue-500 group`}
-              onClick={() => handleNavMenuStatus(item.key, item.to)}
+              onClick={() => {
+                handleClick(item.key, item.to);
+                toggleMenu();
+              }}
+              ref={(el) => {
+                buttonRefs.current[index] = el;
+              }}
             >
               <div className="flex items-center gap-4 p-2">
                 <Image
@@ -79,7 +88,9 @@ export default function MobileMenuButton({
                 <div
                   className={`${
                     item.src === "" ? "pl-[24px] ml-4" : ""
-                  } font-semibold text-sm`}
+                  } font-semibold text-sm ${
+                    item.key === activeKey ? " text-blue-500" : " text-black"
+                  }`}
                 >
                   {item.title}
                 </div>
