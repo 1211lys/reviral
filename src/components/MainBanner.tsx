@@ -7,6 +7,7 @@ import { Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/scrollbar";
+import { useRouter } from "next/navigation";
 
 const IMAGE_LIST = [
   { key: 0, src: "/images/1.png", color: "bg-red-500" },
@@ -16,13 +17,34 @@ const IMAGE_LIST = [
 ];
 
 const BANNER_BUTTON_LIST = [
-  { key: 0, src: "/images/banner1.png", title: "마감 임박" },
-  { key: 1, src: "/images/banner2.png", title: "오늘 오픈" },
-  { key: 2, src: "/images/banner3.png", title: "시간 구매" },
-  { key: 3, src: "/images/banner4.png", title: "당일 구매" },
+  {
+    key: 0,
+    src: "/images/banner1.png",
+    title: "마감 임박",
+    to: "/list?category=deadline",
+  },
+  {
+    key: 1,
+    src: "/images/banner2.png",
+    title: "오늘 오픈",
+    to: "/list?category=today",
+  },
+  {
+    key: 2,
+    src: "/images/banner3.png",
+    title: "시간 구매",
+    to: "/list?category=time",
+  },
+  {
+    key: 3,
+    src: "/images/banner4.png",
+    title: "당일 구매",
+    to: "/list?category=daily",
+  },
 ];
 
 export default function MainBanner() {
+  const router = useRouter();
   return (
     <>
       <div className="w-screen py-10 relative">
@@ -102,6 +124,7 @@ export default function MainBanner() {
           <button
             key={item.key}
             className=" hover:border-b-blue-500 hover:text-blue-500"
+            onClick={() => router.push(`${item.to}`)}
           >
             <Image src={item.src} width={95} height={95} alt="bannerButton" />
             <h1 className="mt-4">{item.title}</h1>

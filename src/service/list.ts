@@ -15,3 +15,8 @@ export const GetCampaignList = (
 
   return api.get(`campaign?${queryParams.toString()}`);
 };
+
+export const getDetailCampaignItems = async (id: string) => {
+  const response = await api.get(`campaign/${id}`);
+  return response;
+};

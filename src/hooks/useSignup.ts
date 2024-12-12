@@ -1,5 +1,5 @@
 import { GetAccountCheck } from "@/service/auth";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 export type SignupKeys =
   | "allCheck"
@@ -169,13 +169,6 @@ export function useSignup() {
         .catch(console.error);
     }
   };
-
-  useEffect(
-    () => (
-      console.log("11111", signupData), console.log("2222222", validationErrors)
-    ),
-    [signupData, validationErrors]
-  );
 
   return {
     signupData,

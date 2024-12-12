@@ -4,13 +4,15 @@ import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
 import { GetCampaignListResponse } from "@/types/list";
 import { GetCampaignList } from "@/service/list";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
+import Loading from "@/app/Loading";
 
 export default function ContentItems() {
   const [data, setData] = useState<GetCampaignListResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
   const [hasMore, setHasMore] = useState(true);
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   // 쿼리 파라미터 값 가져오기
@@ -115,7 +117,7 @@ export default function ContentItems() {
     }
   };
 
-  if (!data) return <div>Loading...</div>;
+  if (!data) return <Loading />;
 
   return (
     <div className="w-full flex items-start justify-center bg-bgBLue min-h-[calc(100vh-8rem)]">
@@ -130,6 +132,7 @@ export default function ContentItems() {
             <button
               key={item.campaignId}
               className="max-w-[250px] text-left bg-white border-white shadow-lg rounded-md hover:text-black text-gray-500 hover:scale-105"
+              onClick={() => router.push(`/list/detail/${item.campaignId}`)}
             >
               <div>
                 <div className="relative w-[250px] h-[160px]">

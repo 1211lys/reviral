@@ -1,7 +1,7 @@
 import ContentItems from "@/components/common/ContentItems";
 import ListTitle from "@/components/list/ListTitle";
 
-import React, { Suspense } from "react";
+import React from "react";
 
 export default function Page() {
   return (
@@ -9,7 +9,6 @@ export default function Page() {
       <div className="flex w-full justify-center my-10">
         <ListTitle />
       </div>
-
       <ContentItems />
     </div>
   );

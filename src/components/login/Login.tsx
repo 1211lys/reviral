@@ -3,7 +3,7 @@
 import { PostSigninData } from "@/service/auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import IdPwModal from "../common/IdPwModal";
 import { useModal } from "@/hooks/useModal";
 
@@ -45,10 +45,6 @@ export default function Login() {
         }
       });
   };
-
-  useEffect(() => {
-    console.log(loginData);
-  }, [loginData]);
 
   return (
     <div className="flex flex-col items-center justify-center w-full p-10 h-full min-h-[550px]">

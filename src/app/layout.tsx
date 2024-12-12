@@ -5,6 +5,8 @@ import "./globals.css";
 import Footer from "@/components/common/Footer";
 import Nav from "@/components/common/Nav";
 import Providers from "./lib/Providers";
+import { Suspense } from "react";
+import Loading from "./Loading";
 
 const notoSans = Noto_Sans({
   subsets: ["latin"],
@@ -25,10 +27,13 @@ export default function RootLayout({
     <html lang="en" className="font-sans">
       <body className={`${notoSans.variable} antialiased`}>
         <Providers>
-          <Nav />
-          <div className="min-h-[calc(100vh-8rem)]">{children}</div>
-          <Footer />
-          <div id="portal" />
+          <Suspense fallback={<Loading />}>
+            <Nav />
+
+            <div className="min-h-[calc(100vh-8rem)]">{children}</div>
+            <Footer />
+            <div id="portal" />
+          </Suspense>
         </Providers>
       </body>
     </html>
