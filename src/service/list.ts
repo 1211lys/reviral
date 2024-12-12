@@ -4,6 +4,8 @@ import {
   GetCampaignListRequest,
   GetCampaignListResponse,
   GetDetailCampaignItemsResponse,
+  PostCampaignEnrollRequest,
+  PostCampaignEnrollResponse,
 } from "@/types/list";
 
 export const GetCampaignList = (
@@ -21,8 +23,21 @@ export const GetCampaignList = (
 };
 
 export const getDetailCampaignItems = async (
-  id: string
+  id: number
 ): Promise<AxiosResponse<GetDetailCampaignItemsResponse>> => {
   const response = await api.get(`campaign/${id}`);
   return response;
+};
+
+export const PostCampaignEnrollData = (
+  param: PostCampaignEnrollRequest,
+  accessToken: string | null,
+  refreshToken: string | null
+): Promise<AxiosResponse<PostCampaignEnrollResponse>> => {
+  return api.post(`campaign/enroll`, param, {
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      "X-Refresh-Token": refreshToken, // 올바르게 작성된 키
+    },
+  });
 };

@@ -6,7 +6,6 @@ import SellerRequest from "@/components/list/detail/SellerRequest";
 import DetailImg from "@/components/list/detail/DetailImg";
 import Guidelines from "@/components/list/detail/Guidelines";
 import DetailDropdown from "@/components/list/detail/DetailDropdown";
-import DetailButtons from "@/components/list/detail/DetailButtons";
 
 export default async function DetailPage({
   params,
@@ -18,7 +17,7 @@ export default async function DetailPage({
   console.log("서버에서 받은 id:", id);
 
   try {
-    const response = await getDetailCampaignItems(id);
+    const response = await getDetailCampaignItems(Number(id));
     const data = response.data.data.campaign;
     console.log(data);
 
@@ -38,6 +37,8 @@ export default async function DetailPage({
           return "오늘 오픈";
       }
     };
+
+    console.log("123", data);
 
     return (
       <div className="w-full py-10">
@@ -71,8 +72,7 @@ export default async function DetailPage({
               오늘 캄페인 신청 인원 {data.joinCount} / {data.totalCount}
             </p>
             <p className="mb-6">블라인드 계정 참여 불가 / 중복 참여 불가</p>
-            <DetailDropdown />
-            <DetailButtons campaignUrl={data.campaignUrl} />
+            <DetailDropdown data={data} />
           </div>
         </div>
         <Guidelines />

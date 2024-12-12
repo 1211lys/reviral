@@ -4,6 +4,7 @@ interface AuthState {
   accessToken: string | null;
   refreshToken: string | null;
   isAuthenticated: boolean;
+  userId: string | null;
 }
 
 const useAuth = () => {
@@ -11,9 +12,9 @@ const useAuth = () => {
     accessToken: null,
     refreshToken: null,
     isAuthenticated: false,
+    userId: null, // userId 초기값 설정
   });
 
-  // 쿠키에서 특정 쿠키 값을 읽는 함수
   const getCookie = (cookieName: string): string | null => {
     const cookies = document.cookie
       .split("; ")
@@ -38,18 +39,38 @@ const useAuth = () => {
     document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
   };
 
+  const decodeJWT = (token: string): Record<string, any> | null => {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map(function (c) {
+          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+        })
+        .join("")
+    );
+    return JSON.parse(jsonPayload);
+  };
+
   useEffect(() => {
     const accessToken = getCookie("accessToken");
     const refreshToken = getCookie("refreshToken");
+
+    let userId = null;
+    if (accessToken) {
+      const decoded = decodeJWT(accessToken);
+      userId = decoded?.sub || null;
+    }
 
     setAuthState({
       accessToken,
       refreshToken,
       isAuthenticated: !!accessToken && !!refreshToken,
+      userId, // userId 상태 설정
     });
   }, []);
 
-  // 로그아웃 함수
   const logout = () => {
     deleteCookie("accessToken");
     deleteCookie("refreshToken");
@@ -58,6 +79,7 @@ const useAuth = () => {
       accessToken: null,
       refreshToken: null,
       isAuthenticated: false,
+      userId: null, // 로그아웃 시 userId 초기화
     });
   };
 

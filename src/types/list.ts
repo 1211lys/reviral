@@ -42,7 +42,7 @@ export interface CampaignOption {
 }
 
 export interface CampaignDetail {
-  campaignDetailsId: number;
+  campaignId: number;
   campaignTitle: string;
   campaignCategory: string;
   campaignUrl: string;
@@ -63,4 +63,21 @@ export interface GetDetailCampaignItemsResponse {
   status: number;
   data: GetDetailCampaignItemsData;
   timestamp: string;
+}
+
+export interface PostCampaignEnrollRequest {
+  userId?: number;
+  campaignId?: number | null;
+  campaignOptionId: number | null;
+  campaignSubOptionId: number | null;
+}
+
+export interface PostCampaignEnrollResponse {
+  status: number;
+  data: {
+    isSave: boolean;
+    code: string;
+    message: string;
+  };
+  timestamp: "2024-12-12T10:48:48.520Z";
 }
