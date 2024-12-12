@@ -28,6 +28,7 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
         bgBLue: "#F2F6FD",
+        bgGuidelines: "#F3F3F3",
       },
       backgroundImage: {
         gradationToday: "linear-gradient(117deg, #FFB6C1 0%, #FF69B4 100%)", // 핑크 계열

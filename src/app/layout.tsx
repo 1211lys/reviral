@@ -6,6 +6,7 @@ import Footer from "@/components/common/Footer";
 import Nav from "@/components/common/Nav";
 import Providers from "./lib/Providers";
 import { Suspense } from "react";
+import "react-toastify/dist/ReactToastify.css";
 import Loading from "./Loading";
 
 const notoSans = Noto_Sans({
@@ -27,7 +28,7 @@ export default function RootLayout({
     <html lang="en" className="font-sans">
       <body className={`${notoSans.variable} antialiased`}>
         <Providers>
-          <Suspense fallback={<Loading />}>
+          <Suspense fallback={""}>
             <Nav />
 
             <div className="min-h-[calc(100vh-8rem)]">{children}</div>

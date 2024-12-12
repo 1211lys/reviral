@@ -1,6 +1,10 @@
 import { AxiosResponse } from "axios";
 import api from "./base";
-import { GetCampaignListRequest, GetCampaignListResponse } from "@/types/list";
+import {
+  GetCampaignListRequest,
+  GetCampaignListResponse,
+  GetDetailCampaignItemsResponse,
+} from "@/types/list";
 
 export const GetCampaignList = (
   param: GetCampaignListRequest
@@ -16,7 +20,9 @@ export const GetCampaignList = (
   return api.get(`campaign?${queryParams.toString()}`);
 };
 
-export const getDetailCampaignItems = async (id: string) => {
+export const getDetailCampaignItems = async (
+  id: string
+): Promise<AxiosResponse<GetDetailCampaignItemsResponse>> => {
   const response = await api.get(`campaign/${id}`);
   return response;
 };

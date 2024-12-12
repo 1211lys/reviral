@@ -29,32 +29,38 @@ export interface GetCampaignListResponse {
   };
 }
 
-// src/types/list.ts
+export interface CampaignSubOption {
+  campaignSubOptionsId: number | null;
+  campaignAddPrice: number | null;
+  campaignSubOptionTitle: string | null;
+}
+
+export interface CampaignOption {
+  campaignOptionsId: number;
+  optionTitle: string;
+  subOptions: CampaignSubOption[];
+}
+
+export interface CampaignDetail {
+  campaignDetailsId: number;
+  campaignTitle: string;
+  campaignCategory: string;
+  campaignUrl: string;
+  campaignImgUrl: string;
+  campaignPrice: number;
+  campaignPoint: number;
+  sellerRequest: string;
+  totalCount: number;
+  joinCount: number;
+  options: CampaignOption[];
+}
+
+export interface GetDetailCampaignItemsData {
+  campaign: CampaignDetail;
+}
 
 export interface GetDetailCampaignItemsResponse {
   status: number;
-  data: {
-    campaign: Array<{
-      campaignDetailsId: number;
-      campaignTitle: string;
-      campaignCategory: string;
-      campaignUrl: string;
-      campaignImgUrl: string;
-      campaignPrice: number;
-      campaignPoint: number;
-      sellerRequest: string;
-      totalCount: number;
-      joinCount: number;
-      options: Array<{
-        campaignOptionsId: number;
-        optionTitle: string;
-        subOptions: Array<{
-          campaignSubOptionsId: number | null;
-          campaignAddPrice: number | null;
-          campaignSubOptionTitle: string | null;
-        }>;
-      }>;
-    }>;
-  };
+  data: GetDetailCampaignItemsData;
   timestamp: string;
 }
