@@ -1,11 +1,15 @@
 "use client";
 
+import Modal from "@/components/common/Modal";
 import ToastMessage from "@/components/common/ToastMessage";
 import useAuth from "@/hooks/useAuth";
+import { useModal } from "@/hooks/useModal";
 
 import { PostCampaignEnrollData } from "@/service/list";
 import { PostCampaignEnrollRequest } from "@/types/list";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import React from "react";
 import { toast } from "react-toastify";
 
@@ -22,7 +26,9 @@ export default function DetailButtons({
   enrollData,
   campaignId,
 }: Props) {
+  const router = useRouter();
   const { accessToken, refreshToken } = useAuth();
+  const { isOpen, openModal, closeModal, message, setMessage } = useModal();
   const handleCopyLink = () => {
     navigator.clipboard
       .writeText(campaignUrl)
@@ -38,6 +44,11 @@ export default function DetailButtons({
     const campaignOptionId = enrollData.campaignOptionId;
     const campaignSubOptionId = enrollData.campaignSubOptionId;
 
+    if (!accessToken && !refreshToken) {
+      router.push("/login");
+      return;
+    }
+
     PostCampaignEnrollData(
       {
         userId: Number(userId),
@@ -49,15 +60,21 @@ export default function DetailButtons({
       refreshToken
     )
       .then(({ data }) => {
-        console.log(data);
+        if (data.data.isSave) {
+          setMessage("참여 신청이 완료되었습니다.");
+          openModal(() => {
+            router.push("/campaign");
+          });
+        }
       })
       .catch((error) => {
-        console.error(error);
+        setMessage(error.response.data.message);
+        openModal();
       });
   };
 
   return (
-    <div className="flex flex-col gap-6 w-full">
+    <div className="flex flex-col  w-full">
       <ToastMessage />
       <div className="flex gap-2">
         <button
@@ -81,6 +98,7 @@ export default function DetailButtons({
           <p className="font-semibold text-xl">링크 복사</p>
         </button>
       </div>
+      <Modal message={message} isOpen={isOpen} closeModal={closeModal} />
     </div>
   );
 }

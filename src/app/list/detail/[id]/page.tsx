@@ -57,14 +57,8 @@ export default async function DetailPage({
               <h2 className="text-2xl font-bold text-red-600">
                 {data.campaignPrice.toLocaleString()}원
               </h2>
-              <p className="text-2xl font-bold text-orange-400 flex items-center justify-end gap-2">
-                {data.campaignPoint.toLocaleString()}
-                <Image
-                  width={24}
-                  height={24}
-                  alt="point"
-                  src="/images/point.png"
-                />
+              <p className="text-2xl font-bold text-orange-400 f">
+                {data.campaignPoint.toLocaleString()}P
               </p>
             </div>
             <SellerRequest sellerRequest={data.sellerRequest} />

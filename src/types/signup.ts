@@ -1,3 +1,18 @@
+export interface ResetTokenRequest {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface ResetTokenResponse {
+  status: number;
+  data: {
+    grantType: string;
+    accessToken: string;
+    refreshToken: string;
+  };
+  timestamp: string;
+}
+
 export interface SignupResponse {
   status: number;
   code: string;

@@ -59,9 +59,6 @@ export default function UserPointInfo() {
         계정 설정
         <span className="text-sm">내정보, 비밀번호 변경, 계좌 {">"}</span>
       </button>
-      {isOpen && (
-        <Modal isOpen={isOpen} openModal={openModal} closeModal={closeModal} />
-      )}
     </div>
   );
 }

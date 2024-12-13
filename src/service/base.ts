@@ -1,5 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
+import { resetTokenData } from "./auth";
 
 const instance = axios.create({
   baseURL: process.env.NEXT_PUBLIC_BASE_URL,
@@ -37,7 +38,57 @@ instance.interceptors.response.use(
   (response) => {
     return response;
   },
-  (error) => {
+  async (error) => {
+    const originalRequest = error.config;
+
+    // 401 에러 처리
+    if (
+      error.response &&
+      error.response.status === 401 &&
+      !originalRequest._retry
+    ) {
+      originalRequest._retry = true;
+
+      try {
+        const accessToken = Cookies.get("accessToken");
+        const refreshToken = Cookies.get("refreshToken");
+
+        // 토큰이 없는 경우
+        if (!refreshToken || !accessToken) {
+          Cookies.remove("accessToken");
+          Cookies.remove("refreshToken");
+
+          // /login으로 리다이렉션
+          window.location.href = "/login";
+          return Promise.reject(error);
+        }
+
+        // resetTokenData로 토큰 갱신 요청
+        const response = await resetTokenData({
+          accessToken,
+          refreshToken,
+        });
+
+        const newAccessToken = response.data.data.accessToken;
+        const newRefreshToken = response.data.data.refreshToken;
+
+        // 새 토큰 저장
+        Cookies.set("accessToken", newAccessToken, { secure: true });
+        Cookies.set("refreshToken", newRefreshToken, { secure: true });
+
+        // 원래 요청 재시도
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return instance(originalRequest);
+      } catch (refreshError) {
+        // 갱신 실패 시 처리 (예: 로그아웃)
+        console.error("Token refresh failed:", refreshError);
+
+        // /login으로 리다이렉션
+        window.location.href = "/login";
+        return Promise.reject(refreshError);
+      }
+    }
+
     return Promise.reject(error);
   }
 );

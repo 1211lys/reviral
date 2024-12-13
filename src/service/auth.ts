@@ -2,11 +2,18 @@ import { AxiosResponse } from "axios";
 
 import api from "./base";
 import {
+  ResetTokenRequest,
+  ResetTokenResponse,
   SigninRequest,
   SigninResponse,
   SignupRequest,
   SignupResponse,
 } from "@/types/signup";
+
+export const resetTokenData = (
+  param: ResetTokenRequest
+): Promise<AxiosResponse<ResetTokenResponse>> =>
+  api.post(`users/reload`, param);
 
 export const PostSignupData = (
   param: SignupRequest

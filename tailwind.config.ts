@@ -35,6 +35,7 @@ export default {
         gradationDeadline: "linear-gradient(117deg, #FFD700 0%, #FFA500 100%)", // 골드-오렌지 계열
         gradationDaily: "linear-gradient(117deg, #98FB98 0%, #32CD32 100%)", // 초록 계열
         gradationTime: "linear-gradient(117deg, #ADD8E6 0%, #1E90FF 100%)", // 파랑 계열
+        gradationBlue: "linear-gradient(117deg, #96C5FD -1%, #6D9BFF 96%)",
       },
       rotate: {
         "360": "360deg",

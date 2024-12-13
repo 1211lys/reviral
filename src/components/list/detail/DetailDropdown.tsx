@@ -11,9 +11,10 @@ interface Props {
   data: CampaignDetail;
 }
 
-interface Title {
+interface Options {
   optionTitle?: string;
   subOptionTitle?: string;
+  subPrice?: string;
 }
 
 export default function DetailDropdown({ data }: Props) {
@@ -25,9 +26,10 @@ export default function DetailDropdown({ data }: Props) {
     campaignOptionId: null,
     campaignSubOptionId: null,
   });
-  const [title, setTitle] = useState<Title>({
+  const [filteredData, setFilteredData] = useState<Options>({
     optionTitle: "",
     subOptionTitle: "",
+    subPrice: "",
   });
 
   const { userId } = useAuth();
@@ -55,7 +57,7 @@ export default function DetailDropdown({ data }: Props) {
         campaignOptionId: option.campaignOptionsId,
       }));
 
-      setTitle((prev) => ({
+      setFilteredData((prev) => ({
         ...prev,
         optionTitle: option.optionTitle,
       }));
@@ -71,22 +73,27 @@ export default function DetailDropdown({ data }: Props) {
           ? `+${subOption.campaignAddPrice}`
           : `${subOption.campaignAddPrice}`;
 
-      setTitle((prev) => ({
+      setFilteredData((prev) => ({
         ...prev,
-        subOptionTitle: `${subOption.campaignSubOptionTitle} ${priceDisplay}`,
+        subOptionTitle: `${subOption.campaignSubOptionTitle} (${priceDisplay})`,
+        subPrice: priceDisplay,
       }));
     }
   };
 
   // title 값이 변경될 때 isSelected 상태를 false로 업데이트
   useEffect(() => {
-    if (title.optionTitle || title.subOptionTitle) {
+    if (filteredData.optionTitle || filteredData.subOptionTitle) {
       setIsSelected({
         campaign: false,
         subCampaign: false,
       });
     }
-  }, [title]);
+  }, [filteredData]);
+  const returnPoint =
+    Number(data.campaignPoint) +
+    Number(data.campaignPrice) +
+    Number(filteredData.subPrice);
 
   return (
     <div className="flex flex-col gap-6 w-full mb-10">
@@ -95,10 +102,10 @@ export default function DetailDropdown({ data }: Props) {
         className="px-8 py-2 border border-gray-400 w-full text-left flex justify-between relative "
         onClick={() => handleSelected("campaign")}
       >
-        {title.optionTitle === "" ? (
+        {filteredData.optionTitle === "" ? (
           <p>캠페인 선택</p>
         ) : (
-          <p>{title.optionTitle}</p>
+          <p>{filteredData.optionTitle}</p>
         )}
         <Image width={24} height={24} src="/images/arrow.png" alt="arrowImg" />
         {isSelected.campaign && (
@@ -120,13 +127,13 @@ export default function DetailDropdown({ data }: Props) {
       {hasValidSubOptions && (
         <button
           className={`px-8 py-2 border border-gray-400 w-full text-left flex justify-between relative disabled:text-gray-400 disabled:border-gray-400`}
-          disabled={title.optionTitle !== "" ? false : true}
+          disabled={filteredData.optionTitle !== "" ? false : true}
           onClick={() => handleSelected("subCampaign")}
         >
-          {title.subOptionTitle === "" ? (
+          {filteredData.subOptionTitle === "" ? (
             <p>캠페인 추가 선택</p>
           ) : (
-            <p>{title.subOptionTitle}</p>
+            <p>{`${filteredData.subOptionTitle}`}</p>
           )}
           <Image
             width={24}
@@ -135,24 +142,28 @@ export default function DetailDropdown({ data }: Props) {
             alt="arrowImg"
           />
           {isSelected.subCampaign && (
-            <div className="absolute top-full bg-white w-[calc(100%+2px)] -left-[1px] px-8 py-2 border border-gray-400 hover:bg-blue-500 hover:text-white">
+            <div className="absolute top-full bg-white w-[calc(100%+2px)] -left-[1px] border border-gray-400 ">
               {data.options.map((item) =>
                 item.subOptions.map((subItem) =>
                   subItem.campaignSubOptionsId !== null ? (
-                    <p
+                    <div
                       key={subItem.campaignSubOptionsId}
-                      onClick={() =>
-                        handleSelected("subCampaign", null, subItem)
-                      }
+                      className="px-8 py-2 hover:bg-blue-500 hover:text-white"
                     >
-                      {subItem.campaignSubOptionTitle} (
-                      {subItem.campaignAddPrice !== null
-                        ? subItem.campaignAddPrice > 0
-                          ? `+${subItem.campaignAddPrice}`
-                          : subItem.campaignAddPrice
-                        : "가격 정보 없음"}
-                      원)
-                    </p>
+                      <p
+                        onClick={() =>
+                          handleSelected("subCampaign", null, subItem)
+                        }
+                      >
+                        {subItem.campaignSubOptionTitle} (
+                        {subItem.campaignAddPrice !== null
+                          ? subItem.campaignAddPrice > 0
+                            ? `+${subItem.campaignAddPrice}`
+                            : subItem.campaignAddPrice
+                          : "가격 정보 없음"}
+                        원)
+                      </p>
+                    </div>
                   ) : null
                 )
               )}
@@ -160,6 +171,16 @@ export default function DetailDropdown({ data }: Props) {
           )}
         </button>
       )}
+      <div className="flex items-center justify-end gap-2 text-gray-600">
+        <span className="border-r pr-2">예상 적립 포인트</span>
+        {filteredData.optionTitle === "" ? (
+          <span className="text-2xl text-orange-400 font-bold ">0P</span>
+        ) : (
+          <span className="text-2xl text-orange-400 font-bold ">
+            {Number(returnPoint).toLocaleString()}P
+          </span>
+        )}
+      </div>
       <DetailButtons
         campaignUrl={data.campaignUrl}
         userId={userId}
