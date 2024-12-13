@@ -81,7 +81,7 @@ export default function DetailButtons({
           className="bg-blue-500 text-white font-semibold border border-blue-500 w-full p-4 flex justify-center items-center gap-4 rounded-lg"
           onClick={handleCampaignEnroll}
         >
-          <p className="font-semibold text-xl">참여 신청</p>
+          <p className="font-semibold text-xl min-w-[80px]">참여 신청</p>
           <Image
             width={24}
             height={24}
@@ -95,7 +95,7 @@ export default function DetailButtons({
           className="border border-blue-500 font-semibold w-full p-4 flex justify-center items-center gap-4 rounded-lg"
         >
           <Image width={24} height={24} src="/images/copy.png" alt="copyImg" />
-          <p className="font-semibold text-xl">링크 복사</p>
+          <p className="font-semibold text-xl min-w-[80px]">링크 복사</p>
         </button>
       </div>
       <Modal message={message} isOpen={isOpen} closeModal={closeModal} />

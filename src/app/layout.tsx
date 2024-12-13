@@ -28,7 +28,7 @@ export default function RootLayout({
     <html lang="en" className="font-sans">
       <body className={`${notoSans.variable} antialiased`}>
         <Providers>
-          <Suspense fallback={""}>
+          <Suspense fallback={<Loading />}>
             <Nav />
 
             <div className="min-h-[calc(100vh-8rem)]">{children}</div>

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { getDetailCampaignItems } from "@/service/list";
 import { notFound } from "next/navigation";
 

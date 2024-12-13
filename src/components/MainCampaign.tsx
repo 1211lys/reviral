@@ -24,7 +24,13 @@ export default function MainCampaign() {
           전체 보기 {">"}
         </button>
       </div>
-      <ContentItems />
+
+      <ContentItems
+        categoryProps={"deadline"}
+        platformProps={null}
+        statusProps={null}
+        sizeProps={5}
+      />
     </div>
   );
 }

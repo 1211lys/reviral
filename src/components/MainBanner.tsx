@@ -11,9 +11,9 @@ import { useRouter } from "next/navigation";
 
 const IMAGE_LIST = [
   { key: 0, src: "/images/1.png", color: "bg-red-500" },
-  { key: 1, src: "/images/1.png", color: "bg-blue-500" },
-  { key: 2, src: "/images/1.png", color: "bg-green-500" },
-  { key: 3, src: "/images/1.png", color: "bg-yellow-500" },
+  // { key: 1, src: "/images/1.png", color: "bg-blue-500" },
+  // { key: 2, src: "/images/1.png", color: "bg-green-500" },
+  // { key: 3, src: "/images/1.png", color: "bg-yellow-500" },
 ];
 
 const BANNER_BUTTON_LIST = [
@@ -49,9 +49,9 @@ export default function MainBanner() {
     <>
       <div className="w-screen py-10 relative">
         <div className="banner:hidden">
-          <div className="absolute bottom-10 right-[5%] w-10 h-10 bg-red-600 z-10">
+          {/* <div className="absolute bottom-10 right-[5%] w-10 h-10 bg-red-600 z-10">
             인덱스
-          </div>
+          </div> */}
           <Swiper
             spaceBetween={0}
             slidesPerView={1}

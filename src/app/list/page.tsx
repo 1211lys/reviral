@@ -9,7 +9,12 @@ export default function Page() {
       <div className="flex w-full justify-center my-10">
         <ListTitle />
       </div>
-      <ContentItems />
+      <ContentItems
+        categoryProps={null}
+        platformProps={null}
+        statusProps={null}
+        sizeProps={15}
+      />
     </div>
   );
 }

@@ -1,89 +1,98 @@
+import { PostSigninData } from "@/service/auth";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 
-interface AuthState {
-  accessToken: string | null;
-  refreshToken: string | null;
-  isAuthenticated: boolean;
-  userId: string | null;
-}
-
-const useAuth = () => {
-  const [authState, setAuthState] = useState<AuthState>({
-    accessToken: null,
-    refreshToken: null,
-    isAuthenticated: false,
-    userId: null, // userId 초기값 설정
-  });
-
-  const getCookie = (cookieName: string): string | null => {
-    const cookies = document.cookie
-      .split("; ")
-      .reduce((acc: Record<string, string>, current) => {
-        const [key, value] = current.split("=");
-        acc[key] = decodeURIComponent(value);
-        return acc;
-      }, {});
-
-    return cookies[cookieName] || null;
-  };
-
-  const setCookie = (name: string, value: string, days: number) => {
-    const date = new Date();
-    date.setTime(date.getTime() + days * 24 * 60 * 60 * 1000);
-    document.cookie = `${name}=${encodeURIComponent(
-      value
-    )};expires=${date.toUTCString()};path=/`;
-  };
-
-  const deleteCookie = (name: string) => {
-    document.cookie = `${name}=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/`;
-  };
-
-  const decodeJWT = (token: string): Record<string, any> | null => {
+// JWT 디코딩 함수
+const decodeJWT = (token: string): { sub: string } | null => {
+  try {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const jsonPayload = decodeURIComponent(
       atob(base64)
         .split("")
-        .map(function (c) {
-          return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
-        })
+        .map((c) => `%${("00" + c.charCodeAt(0).toString(16)).slice(-2)}`)
         .join("")
     );
     return JSON.parse(jsonPayload);
-  };
+  } catch {
+    return null;
+  }
+};
 
+const useAuth = () => {
+  const router = useRouter();
+
+  // 로그인 상태 및 에러 관리
+  const [isError, setIsError] = useState(false);
+  const [loginData, setLoginData] = useState({ loginId: "", password: "" });
+
+  // JWT 토큰 및 유저 ID 상태
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+  const [refreshToken, setRefreshToken] = useState<string | null>(null);
+  const [userId, setUserId] = useState<string | null>(null);
+
+  // 쿠키에서 토큰 가져오기
   useEffect(() => {
-    const accessToken = getCookie("accessToken");
-    const refreshToken = getCookie("refreshToken");
+    const access = Cookies.get("accessToken") || null;
+    const refresh = Cookies.get("refreshToken") || null;
 
-    let userId = null;
-    if (accessToken) {
-      const decoded = decodeJWT(accessToken);
-      userId = decoded?.sub || null;
-    }
-
-    setAuthState({
-      accessToken,
-      refreshToken,
-      isAuthenticated: !!accessToken && !!refreshToken,
-      userId, // userId 상태 설정
-    });
+    setAccessToken(access);
+    setRefreshToken(refresh);
+    setUserId(access ? decodeJWT(access)?.sub || null : null);
   }, []);
 
-  const logout = () => {
-    deleteCookie("accessToken");
-    deleteCookie("refreshToken");
+  // 로그인 함수
+  const login = async () => {
+    try {
+      const { data } = await PostSigninData(loginData);
+      const { accessToken, refreshToken } = data.data.jwt;
 
-    setAuthState({
-      accessToken: null,
-      refreshToken: null,
-      isAuthenticated: false,
-      userId: null, // 로그아웃 시 userId 초기화
-    });
+      // 쿠키에 토큰 저장
+      Cookies.set("accessToken", accessToken, { expires: 7 });
+      Cookies.set("refreshToken", refreshToken, { expires: 7 });
+
+      // 상태 갱신
+      setAccessToken(accessToken);
+      setRefreshToken(refreshToken);
+      setUserId(decodeJWT(accessToken)?.sub || null);
+
+      // 페이지 이동
+      router.replace("/");
+    } catch {
+      setIsError(true);
+    }
   };
 
-  return { ...authState, logout, setCookie };
+  // 로그아웃 함수
+  const logout = () => {
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
+
+    // 상태 초기화
+    setAccessToken(null);
+    setRefreshToken(null);
+    setUserId(null);
+
+    // 페이지 이동
+    router.push("/");
+  };
+
+  // 로그인 입력 핸들러
+  const handleLoginInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setLoginData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  return {
+    accessToken,
+    refreshToken,
+    userId,
+    isError,
+    login,
+    logout,
+    handleLoginInputChange,
+  };
 };
 
 export default useAuth;

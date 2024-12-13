@@ -30,9 +30,9 @@ export interface GetCampaignListResponse {
 }
 
 export interface CampaignSubOption {
-  campaignSubOptionsId: number | null;
-  campaignAddPrice: number | null;
-  campaignSubOptionTitle: string | null;
+  campaignSubOptionsId?: number | null;
+  campaignAddPrice?: number | null;
+  campaignSubOptionTitle?: string | null;
 }
 
 export interface CampaignOption {

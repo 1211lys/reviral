@@ -9,7 +9,12 @@ export default function MainTotalList() {
         켐페인
         <span className="font-normal text-black "> 찾으셨나요 ?</span>
       </h1>
-      <ContentItems />
+      <ContentItems
+        categoryProps={null}
+        platformProps={null}
+        statusProps={null}
+        sizeProps={15}
+      />
     </div>
   );
 }

@@ -7,7 +7,19 @@ import { GetCampaignList } from "@/service/list";
 import { useRouter, useSearchParams } from "next/navigation";
 import Loading from "@/app/Loading";
 
-export default function ContentItems() {
+interface Props {
+  categoryProps: string | null;
+  platformProps: string | null;
+  statusProps: string | null;
+  sizeProps: number;
+}
+
+export default function ContentItems({
+  categoryProps,
+  platformProps,
+  statusProps,
+  sizeProps,
+}: Props) {
   const [data, setData] = useState<GetCampaignListResponse | null>(null);
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(0);
@@ -32,11 +44,11 @@ export default function ContentItems() {
 
     try {
       const response = await GetCampaignList({
-        category,
-        platform,
-        status,
+        category: categoryProps === null ? category : categoryProps,
+        platform: platformProps === null ? platform : platformProps,
+        status: statusProps === null ? status : statusProps,
         page: reset ? 0 : page,
-        size: 15,
+        size: sizeProps,
       });
 
       const newData = response.data;
@@ -120,7 +132,11 @@ export default function ContentItems() {
   if (!data) return <Loading />;
 
   return (
-    <div className="w-full flex items-start justify-center bg-bgBLue min-h-[calc(100vh-8rem)]">
+    <div
+      className={`w-full flex items-start justify-center bg-bgBLue ${
+        sizeProps === 5 ? "" : "min-h-[calc(100vh-8rem)]"
+      }`}
+    >
       <div className="grid grid-cols-1 gap-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 xxl:grid-cols-5 my-10">
         {data?.data?.campaigns?.map((item) => {
           const imgUrl =
@@ -163,9 +179,13 @@ export default function ContentItems() {
                         E
                       </div>
                     )}
-                    <p className=" ml-2 text-xl font-semibold">
-                      {item.period}일 남음
-                    </p>
+                    <div className=" ml-2 text-xl font-semibold">
+                      {item.period === 0 ? (
+                        <div className="text-red-500 font-bold"> 오늘 마감</div>
+                      ) : (
+                        `${item.period}일 남음`
+                      )}
+                    </div>
                   </div>
                   <h1 className="text-xl text-black font-semibold overflow-hidden text-ellipsis whitespace-nowrap">
                     {item.campaignTitle}

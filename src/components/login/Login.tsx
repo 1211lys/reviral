@@ -1,50 +1,17 @@
 "use client";
 
-import { PostSigninData } from "@/service/auth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useState } from "react";
+import React from "react";
 import IdPwModal from "../common/IdPwModal";
 import { useModal } from "@/hooks/useModal";
+import useAuth from "@/hooks/useAuth";
 
 export default function Login() {
   const router = useRouter();
-  const [loginData, setLoginData] = useState({ loginId: "", password: "" });
-  const [isError, setIsError] = useState(false);
+
+  const { login, handleLoginInputChange, isError } = useAuth();
   const { isOpen, openModal, closeModal } = useModal();
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-
-    setLoginData((prevData) => ({
-      ...prevData,
-      [id]: value,
-    }));
-  };
-
-  const handleLogin = () => {
-    PostSigninData({
-      loginId: loginData.loginId,
-      password: loginData.password,
-    })
-      .then(({ data }) => {
-        const accessToken = data.data.jwt.accessToken;
-        const refreshToken = data.data.jwt.refreshToken;
-
-        document.cookie = `accessToken=${accessToken}; max-age=${
-          2 * 60 * 60
-        }; path=/`;
-        document.cookie = `refreshToken=${refreshToken}; max-age=${
-          14 * 24 * 60 * 60
-        }; path=/`;
-
-        router.push("/");
-      })
-      .catch((error) => {
-        if (error) {
-          setIsError(true);
-        }
-      });
-  };
 
   return (
     <div className="flex flex-col items-center justify-center w-full p-10 h-full min-h-[550px]">
@@ -66,14 +33,14 @@ export default function Login() {
             type="text"
             placeholder="아이디를 입력해 주세요."
             id="loginId"
-            onChange={handleInputChange}
+            onChange={handleLoginInputChange}
           />
           <input
             className=" w-full px-4 py-2 rounded-lg mb-4 border-gray-200 bg-gray-100 text-sm"
             type="password"
             placeholder="비밀번호를 입력해 주세요."
             id="password"
-            onChange={handleInputChange}
+            onChange={handleLoginInputChange}
           />
           {isError && (
             <p className="text-sm ml-4 text-red-500">
@@ -82,13 +49,13 @@ export default function Login() {
           )}
           <button
             className="text-right w-full text-gray-400  hover:text-blue-500 text-xs"
-            onClick={openModal}
+            onClick={() => openModal}
           >
             계정을 잃어버리셨나요?
           </button>
           <button
             className="text-right w-full text-gray-400  hover:text-blue-500 text-xs"
-            onClick={openModal}
+            onClick={() => openModal}
           >
             비밀번호를 잃어버리셨나요?
           </button>
@@ -96,7 +63,7 @@ export default function Login() {
         <div className="flex flex-col">
           <button
             className="w-full bg-blue-500 text-white p-2 rounded-lg mb-4 font-bold hover:bg-blue-400"
-            onClick={handleLogin}
+            onClick={login}
           >
             로그인
           </button>

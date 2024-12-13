@@ -2,11 +2,13 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useState, useEffect, useRef } from "react";
+import useAuth from "./useAuth";
 
 export function useNav(menuList: { key: number; to: string | null }[]) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const { logout } = useAuth();
   const [activeKey, setActiveKey] = useState<number | null>(null);
 
   // 버튼 참조 배열 타입 정의
@@ -29,6 +31,12 @@ export function useNav(menuList: { key: number; to: string | null }[]) {
   }, [pathname, searchParams, menuList]);
 
   const handleClick = (key: number, to: string) => {
+    if (to === "logout") {
+      logout();
+      window.location.reload();
+      return;
+    }
+
     setActiveKey(key);
     router.push(to);
 

@@ -1,8 +1,12 @@
 "use client";
 
 import useAuth from "@/hooks/useAuth";
-
-import { CampaignDetail, PostCampaignEnrollRequest } from "@/types/list";
+import {
+  CampaignDetail,
+  CampaignOption,
+  CampaignSubOption,
+  PostCampaignEnrollRequest,
+} from "@/types/list";
 import Image from "next/image";
 import React, { useState, useEffect } from "react";
 import DetailButtons from "./DetailButtons";
@@ -12,9 +16,9 @@ interface Props {
 }
 
 interface Options {
-  optionTitle?: string;
-  subOptionTitle?: string;
-  subPrice?: string;
+  optionTitle: string;
+  subOptionTitle: string;
+  subPrice: string | null;
 }
 
 export default function DetailDropdown({ data }: Props) {
@@ -29,7 +33,7 @@ export default function DetailDropdown({ data }: Props) {
   const [filteredData, setFilteredData] = useState<Options>({
     optionTitle: "",
     subOptionTitle: "",
-    subPrice: "",
+    subPrice: null,
   });
 
   const { userId } = useAuth();
@@ -39,22 +43,21 @@ export default function DetailDropdown({ data }: Props) {
     item.subOptions.some((subItem) => subItem.campaignSubOptionsId !== null)
   );
 
-  // 캠페인 선택 또는 서브 캠페인 선택 상태 업데이트
   const handleSelected = (
     key: "campaign" | "subCampaign",
-    option?: any,
-    subOption?: any
+    option?: CampaignOption | null,
+    subOption?: CampaignSubOption | null
   ) => {
     setIsSelected((prev) => ({
       ...prev,
       [key]: !prev[key],
     }));
 
-    // 선택한 캠페인 옵션 및 서브 옵션 제목 업데이트
     if (key === "campaign" && option) {
       setEnrollData((prev) => ({
         ...prev,
         campaignOptionId: option.campaignOptionsId,
+        campaignSubOptionId: null,
       }));
 
       setFilteredData((prev) => ({
@@ -66,22 +69,23 @@ export default function DetailDropdown({ data }: Props) {
     if (key === "subCampaign" && subOption) {
       setEnrollData((prev) => ({
         ...prev,
-        campaignSubOptionId: subOption.campaignSubOptionsId,
+        campaignSubOptionId: subOption.campaignSubOptionsId ?? null,
       }));
+
       const priceDisplay =
-        subOption.campaignAddPrice > 0
+        subOption.campaignAddPrice !== null &&
+        (subOption.campaignAddPrice as number) > 0
           ? `+${subOption.campaignAddPrice}`
-          : `${subOption.campaignAddPrice}`;
+          : `${subOption.campaignAddPrice ?? "가격 정보 없음"}`;
 
       setFilteredData((prev) => ({
         ...prev,
         subOptionTitle: `${subOption.campaignSubOptionTitle} (${priceDisplay})`,
-        subPrice: priceDisplay,
+        subPrice: subOption.campaignAddPrice?.toString() ?? null,
       }));
     }
   };
 
-  // title 값이 변경될 때 isSelected 상태를 false로 업데이트
   useEffect(() => {
     if (filteredData.optionTitle || filteredData.subOptionTitle) {
       setIsSelected({
@@ -90,10 +94,11 @@ export default function DetailDropdown({ data }: Props) {
       });
     }
   }, [filteredData]);
+
   const returnPoint =
     Number(data.campaignPoint) +
     Number(data.campaignPrice) +
-    Number(filteredData.subPrice);
+    (filteredData.subPrice ? Number(filteredData.subPrice) : 0);
 
   return (
     <div className="flex flex-col gap-6 w-full mb-10">
@@ -157,7 +162,7 @@ export default function DetailDropdown({ data }: Props) {
                       >
                         {subItem.campaignSubOptionTitle} (
                         {subItem.campaignAddPrice !== null
-                          ? subItem.campaignAddPrice > 0
+                          ? (subItem.campaignAddPrice as number) > 0
                             ? `+${subItem.campaignAddPrice}`
                             : subItem.campaignAddPrice
                           : "가격 정보 없음"}
