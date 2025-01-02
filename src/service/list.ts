@@ -31,8 +31,8 @@ export const getDetailCampaignItems = async (
 
 export const PostCampaignEnrollData = (
   param: PostCampaignEnrollRequest,
-  accessToken: string | null,
-  refreshToken: string | null
+  accessToken?: string,
+  refreshToken?: string
 ): Promise<AxiosResponse<PostCampaignEnrollResponse>> => {
   return api.post(`campaign/enroll`, param, {
     headers: {

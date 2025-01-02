@@ -3,7 +3,7 @@ import MainBestCampaign from "@/components/MainBestCampaign";
 import MainCampaign from "@/components/MainCampaign";
 import MainTotalList from "@/components/MainTotalList";
 
-export default function Home() {
+export default async function Home() {
   return (
     <div>
       <div>

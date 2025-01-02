@@ -50,7 +50,6 @@ export default function IdPwModal({ isOpen, closeModal }: Props) {
           </div>
         </div>
       )}
-      \
     </div>
   );
 }

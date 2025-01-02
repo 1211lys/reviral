@@ -5,6 +5,8 @@ import SellerRequest from "@/components/list/detail/SellerRequest";
 import DetailImg from "@/components/list/detail/DetailImg";
 import Guidelines from "@/components/list/detail/Guidelines";
 import DetailDropdown from "@/components/list/detail/DetailDropdown";
+import { cookies } from "next/headers";
+import { decodeJWT } from "@/app/utils/jwt";
 
 export default async function DetailPage({
   params,
@@ -12,6 +14,11 @@ export default async function DetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const cookieStore = await cookies();
+  const accessToken = cookieStore.get("accessToken")?.value;
+  const userId = decodeJWT(accessToken as string);
+
+  console.log("detail", userId?.sub);
 
   console.log("서버에서 받은 id:", id);
 
@@ -65,7 +72,7 @@ export default async function DetailPage({
               오늘 캄페인 신청 인원 {data.joinCount} / {data.totalCount}
             </p>
             <p className="mb-6">블라인드 계정 참여 불가 / 중복 참여 불가</p>
-            <DetailDropdown data={data} />
+            <DetailDropdown data={data} userId={userId?.sub} />
           </div>
         </div>
         <Guidelines />

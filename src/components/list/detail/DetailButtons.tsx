@@ -15,7 +15,7 @@ import { toast } from "react-toastify";
 
 interface Props {
   campaignUrl: string;
-  userId: string | null;
+  userId?: number;
   enrollData: PostCampaignEnrollRequest;
   campaignId: number;
 }
@@ -27,8 +27,10 @@ export default function DetailButtons({
   campaignId,
 }: Props) {
   const router = useRouter();
-  const { accessToken, refreshToken } = useAuth();
+  const { accessToken, refreshToken, userName } = useAuth();
   const { isOpen, openModal, closeModal, message, setMessage } = useModal();
+
+  console.log(userId);
   const handleCopyLink = () => {
     navigator.clipboard
       .writeText(campaignUrl)
@@ -51,7 +53,7 @@ export default function DetailButtons({
 
     PostCampaignEnrollData(
       {
-        userId: Number(userId),
+        userId,
         campaignId,
         campaignOptionId,
         campaignSubOptionId,
@@ -63,7 +65,7 @@ export default function DetailButtons({
         if (data.data.isSave) {
           setMessage("참여 신청이 완료되었습니다.");
           openModal(() => {
-            router.push("/campaign");
+            router.push(`/campaign/${userName}`);
           });
         }
       })

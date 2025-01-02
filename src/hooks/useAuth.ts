@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import Cookies from "js-cookie";
 
 // JWT 디코딩 함수
-const decodeJWT = (token: string): { sub: string } | null => {
+export const decodeJWT = (token: string): string | undefined => {
   try {
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
@@ -16,7 +16,26 @@ const decodeJWT = (token: string): { sub: string } | null => {
     );
     return JSON.parse(jsonPayload);
   } catch {
-    return null;
+    return undefined;
+  }
+};
+
+export const decodeUsername = (token: string): string | undefined => {
+  try {
+    const base64Url = token.split(".")[1];
+    const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
+    const jsonPayload = decodeURIComponent(
+      atob(base64)
+        .split("")
+        .map((c) => `%${("00" + c.charCodeAt(0).toString(16)).slice(-2)}`)
+        .join("")
+    );
+    const payload = JSON.parse(jsonPayload);
+
+    // username 값을 반환
+    return payload.username;
+  } catch {
+    return undefined;
   }
 };
 
@@ -28,18 +47,23 @@ const useAuth = () => {
   const [loginData, setLoginData] = useState({ loginId: "", password: "" });
 
   // JWT 토큰 및 유저 ID 상태
-  const [accessToken, setAccessToken] = useState<string | null>(null);
-  const [refreshToken, setRefreshToken] = useState<string | null>(null);
-  const [userId, setUserId] = useState<string | null>(null);
+  const [accessToken, setAccessToken] = useState<undefined | string>("");
+  const [refreshToken, setRefreshToken] = useState<undefined | string>("");
+  const [userId, setUserId] = useState<undefined | string>("");
+  const [userName, setUserName] = useState<undefined | string>("");
 
   // 쿠키에서 토큰 가져오기
   useEffect(() => {
-    const access = Cookies.get("accessToken") || null;
-    const refresh = Cookies.get("refreshToken") || null;
+    const access = Cookies.get("accessToken");
+    const refresh = Cookies.get("refreshToken");
+
+    if (!access) {
+      return;
+    }
 
     setAccessToken(access);
     setRefreshToken(refresh);
-    setUserId(access ? decodeJWT(access)?.sub || null : null);
+    setUserId(decodeJWT(access));
   }, []);
 
   // 로그인 함수
@@ -55,7 +79,8 @@ const useAuth = () => {
       // 상태 갱신
       setAccessToken(accessToken);
       setRefreshToken(refreshToken);
-      setUserId(decodeJWT(accessToken)?.sub || null);
+      setUserId(decodeJWT(accessToken));
+      setUserName(decodeUsername(accessToken));
 
       // 페이지 이동
       router.replace("/");
@@ -70,9 +95,9 @@ const useAuth = () => {
     Cookies.remove("refreshToken");
 
     // 상태 초기화
-    setAccessToken(null);
-    setRefreshToken(null);
-    setUserId(null);
+    setAccessToken("");
+    setRefreshToken("");
+    setUserId("");
 
     // 페이지 이동
     router.push("/");
@@ -87,11 +112,15 @@ const useAuth = () => {
   return {
     accessToken,
     refreshToken,
+    userName,
     userId,
+    setUserId,
     isError,
     login,
     logout,
     handleLoginInputChange,
+    decodeJWT,
+    decodeUsername,
   };
 };
 

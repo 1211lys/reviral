@@ -1,41 +1,57 @@
-import React from "react";
+"use client";
+
+import Cookies from "js-cookie";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+
 import MobileMenuButton from "./MobileMenuButton";
 import { MenuItem } from "@/types/common";
-import { useRouter } from "next/navigation";
 import { useNav } from "@/hooks/useNav";
-import useAuth from "@/hooks/useAuth";
-import Loading from "@/app/Loading";
+
+import { useEffect, useState } from "react";
 
 interface Props {
-  NAV_LIST: MenuItem[];
   isMenuOpen: boolean;
   toggleMenu: () => void;
   menuRef: React.RefObject<HTMLDivElement>;
   buttonRef: React.RefObject<HTMLButtonElement>;
+  initialUserId?: string;
 }
 
 export default function NavMenuList({
-  NAV_LIST,
   isMenuOpen,
   toggleMenu,
   menuRef,
   buttonRef,
-}: Props) {
+  initialUserId,
+}: Props): React.JSX.Element {
+  const [userId, setUserId] = useState(initialUserId);
   const router = useRouter();
-  const { activeKey, handleClick, buttonRefs } = useNav(NAV_LIST);
-  const { accessToken, refreshToken, logout } = useAuth(); // logout 추가
 
-  // Nav 리스트 업데이트
-  const updatedNavList = NAV_LIST.map((item) => {
-    if (accessToken && refreshToken && item.title === "로그인") {
-      return { ...item, title: "로그아웃", to: "logout" };
-    }
-    if ((!accessToken || !refreshToken) && item.title === "로그아웃") {
-      return { ...item, title: "로그인", to: "/login" };
-    }
-    return item;
-  });
+  const NAV_LIST: MenuItem[] = [
+    { key: 1, title: "포인트", src: "/images/point.png", to: "/point" },
+    {
+      key: 2,
+      title: "My 캠페인",
+      src: "/images/campaign.png",
+      to: userId ? `/campaign/${userId}` : "/login",
+    },
+    userId
+      ? { key: 3, title: "로그아웃", src: "/images/login.png", to: "logout" }
+      : { key: 4, title: "로그인", src: "/images/login.png", to: "/login" },
+  ];
+
+  const { activeKey, handleClick, buttonRefs } = useNav(NAV_LIST);
+
+  useEffect(() => {
+    setUserId(initialUserId);
+  }, [initialUserId, userId, setUserId]);
+
+  const handleLogout = () => {
+    Cookies.remove("accessToken");
+    Cookies.remove("refreshToken");
+    setUserId(undefined);
+  };
 
   return (
     <div className="w-full flex justify-between gap-4 p-4 sm:w-screen sm:max-w-[1440px]">
@@ -49,9 +65,8 @@ export default function NavMenuList({
           <h2 className="text-sm">세상의 모든 리뷰</h2>
         </div>
       </button>
-
       <MobileMenuButton
-        NAV_LIST={updatedNavList} // 변경된 리스트 전달
+        NAV_LIST={NAV_LIST}
         isMenuOpen={isMenuOpen}
         toggleMenu={toggleMenu}
         menuRef={menuRef}
@@ -60,15 +75,14 @@ export default function NavMenuList({
         buttonRefs={buttonRefs}
         activeKey={activeKey}
       />
-
       <div className="hidden sm:flex sm:gap-8">
-        {updatedNavList.map((item, index) => (
+        {NAV_LIST.map((item, index) => (
           <button
             key={item.key}
             className={`group`}
             onClick={() => {
               if (item.to === "logout") {
-                logout(); // 로그아웃 처리
+                handleLogout();
               } else {
                 router.push(item.to);
               }

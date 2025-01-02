@@ -3,12 +3,18 @@
 import React, { useRef, useState } from "react";
 import NavMenuList from "../NavMenuList";
 import MainMenuList from "../MainMenuList";
-import { MAIN_MENU_LIST, NAV_LIST } from "@/types/contants";
+import { MAIN_MENU_LIST } from "@/types/contants";
 
-export default function Nav() {
+interface Props {
+  userId?: string;
+}
+
+export default function Nav({ userId }: Props) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
+
+  console.log("nav", userId);
 
   const toggleMenu = () => setIsMenuOpen((prev) => !prev);
 
@@ -16,7 +22,7 @@ export default function Nav() {
     <div className="w-full border-b-2 border-gray-200">
       <div className="w-full flex flex-col sm:justify-center sm:items-center">
         <NavMenuList
-          NAV_LIST={NAV_LIST}
+          initialUserId={userId}
           isMenuOpen={isMenuOpen}
           toggleMenu={toggleMenu}
           menuRef={menuRef}

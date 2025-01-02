@@ -52,15 +52,11 @@ instance.interceptors.response.use(
       try {
         const accessToken = Cookies.get("accessToken");
         const refreshToken = Cookies.get("refreshToken");
-
-        // 토큰이 없는 경우
         if (!refreshToken || !accessToken) {
           Cookies.remove("accessToken");
           Cookies.remove("refreshToken");
 
-          // /login으로 리다이렉션
-          window.location.href = "/login";
-          return Promise.reject(error);
+          return;
         }
 
         // resetTokenData로 토큰 갱신 요청
@@ -82,9 +78,6 @@ instance.interceptors.response.use(
       } catch (refreshError) {
         // 갱신 실패 시 처리 (예: 로그아웃)
         console.error("Token refresh failed:", refreshError);
-
-        // /login으로 리다이렉션
-        window.location.href = "/login";
         return Promise.reject(refreshError);
       }
     }

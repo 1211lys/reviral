@@ -3,6 +3,7 @@ export interface MenuItem {
   title: string;
   src?: string;
   to: string;
+  userId?: string;
 }
 
 export interface ApiErrorType {

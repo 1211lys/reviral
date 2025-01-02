@@ -8,12 +8,6 @@ export const MAIN_MENU_LIST: MenuItem[] = [
   { key: 4, title: "시간 구매", to: "/list?category=time" },
 ];
 
-export const NAV_LIST: MenuItem[] = [
-  { key: 1, title: "포인트", src: "/images/point.png", to: "/point" },
-  { key: 2, title: "My 캠페인", src: "/images/campaign.png", to: "/campaign" },
-  { key: 3, title: "로그인", src: "/images/login.png", to: "/login" },
-];
-
 export const CONDITIONS_OF_SERVICE = `
 <h1>이용약관 동의</h1>
 &shy;

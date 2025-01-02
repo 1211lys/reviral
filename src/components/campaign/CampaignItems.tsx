@@ -2,24 +2,8 @@
 
 import React from "react";
 import UserPointInfo from "../common/UserPointInfo";
-import useAuth from "@/hooks/useAuth";
-import { useRouter } from "next/navigation";
-import Loading from "@/app/Loading";
 
 export default function CampaignItems() {
-  const { accessToken, refreshToken } = useAuth();
-  const router = useRouter();
-
-  if (accessToken === null || refreshToken === null) {
-    // 토큰 로드 전 로딩 상태를 보여줌
-    return <Loading />;
-  }
-
-  if (!accessToken && !refreshToken) {
-    router.push("/login");
-    return null;
-  }
-
   return (
     <div className="flex flex-col-reverse lg:flex-row w-full max-w-[1440px]">
       <div className="flex flex-col items-center justify-center px-2 sm:px-4 w-full lg:w-[70%]  ">

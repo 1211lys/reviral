@@ -12,7 +12,6 @@ interface Props {
   toggleMenu: () => void;
   menuRef: React.RefObject<HTMLDivElement>;
   buttonRef: React.RefObject<HTMLButtonElement>;
-
   handleClick: (key: number, to: string) => void;
   buttonRefs: React.MutableRefObject<(HTMLButtonElement | null)[]>;
   activeKey: number | null;

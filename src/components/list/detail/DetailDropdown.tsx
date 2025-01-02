@@ -13,6 +13,7 @@ import DetailButtons from "./DetailButtons";
 
 interface Props {
   data: CampaignDetail;
+  userId?: number;
 }
 
 interface Options {
@@ -21,7 +22,7 @@ interface Options {
   subPrice: string | null;
 }
 
-export default function DetailDropdown({ data }: Props) {
+export default function DetailDropdown({ data, userId }: Props) {
   const [isSelected, setIsSelected] = useState({
     campaign: false,
     subCampaign: false,
@@ -36,7 +37,6 @@ export default function DetailDropdown({ data }: Props) {
     subPrice: null,
   });
 
-  const { userId } = useAuth();
   console.log("User ID:", userId);
 
   const hasValidSubOptions = data.options.some((item) =>
