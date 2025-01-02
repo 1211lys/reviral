@@ -3,13 +3,14 @@ import { Noto_Sans } from "next/font/google";
 import "./globals.css";
 
 import Footer from "@/components/common/Footer";
-import Nav from "@/components/common/Nav";
+
 import Providers from "./lib/Providers";
 import { Suspense } from "react";
 import "react-toastify/dist/ReactToastify.css";
 import Loading from "./Loading";
 import { cookies } from "next/headers";
 import { decodeJWT } from "./utils/jwt";
+import Nav from "@/components/common/Nav";
 
 const notoSans = Noto_Sans({
   subsets: ["latin"],
@@ -37,7 +38,7 @@ export default async function RootLayout({
       <body className={`${notoSans.variable} antialiased`}>
         <Providers>
           <Suspense fallback={<Loading />}>
-            <Nav userId={userId?.sub} />
+            <Nav />
 
             <div className="min-h-[calc(100vh-8rem)]">{children}</div>
             <Footer />
