@@ -1,7 +1,12 @@
-// Decode JWT token to extract the payload
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export const decodeJWT = (token: string): Record<string, any> | undefined => {
+interface JWTDecodedPayload {
+  sub?: string; // sub는 string 또는 undefined
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any; // 다른 프로퍼티들도 있을 수 있음
+}
+
+export const decodeJWT = (token: string | null): JWTDecodedPayload | null => {
   try {
+    if (!token) return null; // token이 없으면 null 반환
     const base64Url = token.split(".")[1];
     const base64 = base64Url.replace(/-/g, "+").replace(/_/g, "/");
     const jsonPayload = decodeURIComponent(
@@ -10,14 +15,8 @@ export const decodeJWT = (token: string): Record<string, any> | undefined => {
         .map((c) => `%${("00" + c.charCodeAt(0).toString(16)).slice(-2)}`)
         .join("")
     );
-    return JSON.parse(jsonPayload); // 일반적인 객체 반환
+    return JSON.parse(jsonPayload);
   } catch {
-    return undefined; // 에러 발생 시 undefined 반환
+    return null; // 에러 발생 시 null 반환
   }
-};
-
-// Decode JWT token to extract the username
-export const decodeUsername = (token: string): string | undefined => {
-  const payload = decodeJWT(token);
-  return payload?.username; // payload에서 username을 안전하게 추출
 };

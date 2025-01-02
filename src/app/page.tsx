@@ -6,7 +6,7 @@ import MainTotalList from "@/components/MainTotalList";
 export default async function Home() {
   return (
     <div>
-      {/* <div>
+      <div>
         <MainBanner />
       </div>
       <div>
@@ -17,7 +17,7 @@ export default async function Home() {
       </div>
       <div>
         <MainTotalList />
-      </div> */}
+      </div>
     </div>
   );
 }

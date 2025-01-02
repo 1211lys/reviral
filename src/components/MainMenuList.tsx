@@ -1,16 +1,19 @@
 "use client";
 
-import React from "react";
-import { MenuItem } from "@/types/common";
 import { useNav } from "@/hooks/useNav";
+import { MenuItem } from "@/types/common";
+import React from "react";
 
-interface Props {
-  MAIN_MENU_LIST: MenuItem[];
-}
+export const MAIN_MENU_LIST: MenuItem[] = [
+  { key: 0, title: "홈", to: "/" },
+  { key: 1, title: "오늘 오픈", to: "/list?category=today" },
+  { key: 2, title: "마감 임박", to: "/list?category=deadline" },
+  { key: 3, title: "당일 구매", to: "/list?category=daily" },
+  { key: 4, title: "시간 구매", to: "/list?category=time" },
+];
 
-export default function MainMenuList({ MAIN_MENU_LIST }: Props) {
-  const { activeKey, handleClick, buttonRefs } = useNav(MAIN_MENU_LIST);
-
+export default function MainMenuList() {
+  const { buttonRefs, activeKey, handleClick } = useNav(MAIN_MENU_LIST);
   return (
     <div className="overflow-x-auto flex gap-4 sm:justify-start px-4 py-2 touch-action-pan-x scrollbar-none">
       {MAIN_MENU_LIST.map((item, index) => (

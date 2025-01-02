@@ -1,32 +1,26 @@
 "use client";
 
 import Image from "next/image";
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import { MenuItem } from "@/types/common";
 import MenuSvg from "../../public/assets/MenuSvg";
+import { useNav } from "@/hooks/useNav";
 
 interface Props {
-  NAV_LIST: MenuItem[];
-  isMenuOpen: boolean;
-  toggleMenu: () => void;
-  menuRef: React.RefObject<HTMLDivElement>;
-  buttonRef: React.RefObject<HTMLButtonElement>;
-  handleClick: (key: number, to: string) => void;
-  buttonRefs: React.MutableRefObject<(HTMLButtonElement | null)[]>;
-  activeKey: number | null;
+  getNavList: () => {
+    key: number;
+    title: string;
+    src: string;
+    to: string;
+  }[];
 }
 
-export default function MobileMenuButton({
-  NAV_LIST,
-  isMenuOpen,
-  toggleMenu,
-  menuRef,
-  buttonRef,
-  buttonRefs,
-  activeKey,
-  handleClick,
-}: Props) {
+export default function MobileMenuButton({ getNavList }: Props) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
+  const { buttonRefs, activeKey, handleClick } = useNav(getNavList());
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -36,7 +30,7 @@ export default function MobileMenuButton({
         buttonRef.current &&
         !buttonRef.current.contains(event.target as Node)
       ) {
-        toggleMenu(); // 메뉴 닫기
+        setIsMenuOpen((prev) => !prev);
       }
     };
 
@@ -44,13 +38,13 @@ export default function MobileMenuButton({
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isMenuOpen, toggleMenu, menuRef, buttonRef]);
+  }, [isMenuOpen, menuRef, buttonRef]);
 
   return (
     <>
       <button
         ref={buttonRef}
-        onClick={toggleMenu}
+        onClick={() => setIsMenuOpen((prev) => !prev)}
         className="relative group sm:hidden"
       >
         <MenuSvg className="fill-current text-[#80A1EA] group-hover:text-blue-500" />
@@ -61,15 +55,15 @@ export default function MobileMenuButton({
           ref={menuRef}
           className="absolute top-20 right-3 bg-white shadow-lg p-2 rounded-xl border border-gray-300 z-50"
         >
-          {NAV_LIST.map((item, index) => (
+          {getNavList().map((item, index) => (
             <button
               key={item.key}
               className={`flex ${
-                index !== NAV_LIST.length - 1 ? "mb-4" : ""
+                index !== getNavList().length - 1 ? "mb-4" : ""
               } hover:text-blue-500 group`}
               onClick={() => {
                 handleClick(item.key, item.to);
-                toggleMenu();
+                setIsMenuOpen((prev) => !prev);
               }}
               ref={(el) => {
                 buttonRefs.current[index] = el;

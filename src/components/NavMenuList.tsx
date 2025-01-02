@@ -1,33 +1,18 @@
 "use client";
 
-// import Cookies from "js-cookie";
-// import useAuth from "@/hooks/useAuth";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-// import { useEffect, useState } from "react";
-import useAuthStore from "@/store/useAuthStore";
+import MobileMenuButton from "./MobileMenuButton";
+interface Props {
+  isLogin: boolean;
+  logout: () => void;
+  userId: string | null;
+}
 
-export default function NavMenuList() {
+export default function NavMenuList({ isLogin, logout, userId }: Props) {
   const router = useRouter();
-  // const { setIsLogin, isLogin, userId, logout } = useAuth();
-  const { isLogin, logout } = useAuthStore();
-
-  // const [isLoginStatus, setIsLoginStatus] = useState(false);
 
   console.log("네브로그인", isLogin);
-
-  // useEffect(() => {
-  //   const access = Cookies.get("accessToken");
-
-  //   console.log(access);
-  //   if (access) {
-  //     // Update the isLogin state
-  //     setIsLoginStatus(true);
-  //   } else {
-  //     setIsLogin(false);
-  //   }
-  //   getNavList();
-  // }, []);
 
   const getNavList = () => [
     { key: 1, title: "포인트", src: "/images/point.png", to: "/point" },
@@ -35,8 +20,7 @@ export default function NavMenuList() {
       key: 2,
       title: "My 캠페인",
       src: "/images/campaign.png",
-      // to: userId ? `/campaign/${userId?.sub}` : "/login",
-      to: "",
+      to: userId ? `/campaign/${userId}` : "/login",
     },
     !isLogin
       ? { key: 3, title: "로그인", src: "/images/login.png", to: "/login" }
@@ -55,6 +39,7 @@ export default function NavMenuList() {
           <h2 className="text-sm">세상의 모든 리뷰</h2>
         </div>
       </button>
+      <MobileMenuButton getNavList={getNavList} />
 
       <div className="hidden sm:flex sm:gap-8">
         {getNavList().map((item) => (

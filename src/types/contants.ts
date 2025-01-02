@@ -1,13 +1,3 @@
-import { MenuItem } from "./common";
-
-export const MAIN_MENU_LIST: MenuItem[] = [
-  { key: 0, title: "홈", to: "/" },
-  { key: 1, title: "오늘 오픈", to: "/list?category=today" },
-  { key: 2, title: "마감 임박", to: "/list?category=deadline" },
-  { key: 3, title: "당일 구매", to: "/list?category=daily" },
-  { key: 4, title: "시간 구매", to: "/list?category=time" },
-];
-
 export const CONDITIONS_OF_SERVICE = `
 <h1>이용약관 동의</h1>
 &shy;
