@@ -5,12 +5,16 @@ import useAuthStore from "@/store/useAuthStore";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React from "react";
+import IdPwModal from "../common/IdPwModal";
+import { useModal } from "@/hooks/useModal";
 // import IdPwModal from "../common/IdPwModal";
 
 export default function Login() {
   const router = useRouter();
   const { setLogin } = useAuthStore();
+  const { isOpen, openModal, closeModal } = useModal();
 
+  const [isError, setIsError] = React.useState(false);
   const [loginData, setLoginData] = React.useState({
     loginId: "",
     password: "",
@@ -29,7 +33,7 @@ export default function Login() {
       setLogin(accessToken, refreshToken);
       router.replace("/"); // 로그인 성공 시 메인 페이지로 이동
     } catch {
-      // 에러 처리
+      setIsError(true);
     }
   };
 
@@ -62,15 +66,21 @@ export default function Login() {
             id="password"
             onChange={handleChange}
           />
-          {/* {isError && (
+          {isError && (
             <p className="text-sm ml-4 text-red-500">
               계정 또는 비밀번호를 확인해주세요
             </p>
-          )} */}
-          <button className="text-right w-full text-gray-400  hover:text-blue-500 text-xs">
+          )}
+          <button
+            className="text-right w-full text-gray-400  hover:text-blue-500 text-xs"
+            onClick={() => openModal}
+          >
             계정을 잃어버리셨나요?
           </button>
-          <button className="text-right w-full text-gray-400  hover:text-blue-500 text-xs">
+          <button
+            className="text-right w-full text-gray-400  hover:text-blue-500 text-xs"
+            onClick={() => openModal}
+          >
             비밀번호를 잃어버리셨나요?
           </button>
         </div>
@@ -86,7 +96,7 @@ export default function Login() {
           </button>
         </div>
       </div>
-      {/* <IdPwModal isOpen={isOpen} closeModal={closeModal} /> */}
+      <IdPwModal isOpen={isOpen} closeModal={closeModal} />
     </div>
   );
 }

@@ -1,47 +1,36 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { resetTokenData } from "./auth";
 
-const instance = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_BASE_URL,
+const API_BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
+
+// 토큰이 필요한 요청용 Axios 인스턴스
+export const apiWithAuth = axios.create({
+  baseURL: API_BASE_URL,
 });
 
-instance.interceptors.request.use(
+// 토큰이 필요 없는 요청용 Axios 인스턴스
+export const apiWithoutAuth = axios.create({
+  baseURL: API_BASE_URL,
+});
+
+// `apiWithAuth` 요청 시 토큰 추가
+apiWithAuth.interceptors.request.use(
   (config) => {
-    const urlsNotRequiringToken = [
-      "/login",
-      "/signup",
-      "/list",
-      "/list/detail/",
-    ];
-
-    const currentUrl = config.url || "";
-
-    if (urlsNotRequiringToken.some((url) => currentUrl.startsWith(url))) {
-      delete config.headers.Authorization;
-    } else {
-      // 쿠키에서 토큰 가져오기
-      const token = Cookies.get("accessToken");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+    const token = Cookies.get("accessToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
   },
-  (error) => {
-    return Promise.reject(error);
-  }
+  (error) => Promise.reject(error)
 );
 
-instance.interceptors.response.use(
-  (response) => {
-    return response;
-  },
+// `apiWithAuth` 401 에러 처리
+apiWithAuth.interceptors.response.use(
+  (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // 401 에러 처리
     if (
       error.response &&
       error.response.status === 401 &&
@@ -50,33 +39,25 @@ instance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const accessToken = Cookies.get("accessToken");
         const refreshToken = Cookies.get("refreshToken");
-        if (!refreshToken || !accessToken) {
+        if (!refreshToken) {
           Cookies.remove("accessToken");
           Cookies.remove("refreshToken");
-
-          return;
+          return Promise.reject(error);
         }
 
-        // resetTokenData로 토큰 갱신 요청
-        const response = await resetTokenData({
-          accessToken,
+        // 새 토큰 갱신 요청
+        const response = await apiWithoutAuth.post("/users/reload", {
           refreshToken,
         });
 
         const newAccessToken = response.data.data.accessToken;
-        const newRefreshToken = response.data.data.refreshToken;
-
-        // 새 토큰 저장
         Cookies.set("accessToken", newAccessToken, { secure: true });
-        Cookies.set("refreshToken", newRefreshToken, { secure: true });
 
-        // 원래 요청 재시도
+        // 새 토큰으로 원래 요청 재시도
         originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
-        return instance(originalRequest);
+        return apiWithAuth(originalRequest);
       } catch (refreshError) {
-        // 갱신 실패 시 처리 (예: 로그아웃)
         console.error("Token refresh failed:", refreshError);
         return Promise.reject(refreshError);
       }
@@ -85,5 +66,3 @@ instance.interceptors.response.use(
     return Promise.reject(error);
   }
 );
-
-export default instance;

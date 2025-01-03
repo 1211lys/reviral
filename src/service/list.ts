@@ -1,5 +1,5 @@
 import { AxiosResponse } from "axios";
-import api from "./base";
+import { apiWithAuth, apiWithoutAuth } from "./base";
 import {
   GetCampaignListRequest,
   GetCampaignListResponse,
@@ -19,25 +19,18 @@ export const GetCampaignList = (
   queryParams.append("page", param.page.toString());
   queryParams.append("size", param.size.toString());
 
-  return api.get(`campaign?${queryParams.toString()}`);
+  return apiWithoutAuth.get(`campaign?${queryParams.toString()}`);
 };
 
 export const getDetailCampaignItems = async (
   id: number
 ): Promise<AxiosResponse<GetDetailCampaignItemsResponse>> => {
-  const response = await api.get(`campaign/${id}`);
+  const response = await apiWithoutAuth.get(`campaign/${id}`);
   return response;
 };
 
 export const PostCampaignEnrollData = (
-  param: PostCampaignEnrollRequest,
-  accessToken?: string,
-  refreshToken?: string
+  param: PostCampaignEnrollRequest
 ): Promise<AxiosResponse<PostCampaignEnrollResponse>> => {
-  return api.post(`campaign/enroll`, param, {
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "X-Refresh-Token": refreshToken, // 올바르게 작성된 키
-    },
-  });
+  return apiWithAuth.post(`campaign/enroll`, param);
 };

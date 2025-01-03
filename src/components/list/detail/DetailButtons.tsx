@@ -2,10 +2,11 @@
 
 import Modal from "@/components/common/Modal";
 import ToastMessage from "@/components/common/ToastMessage";
-import useAuth from "@/hooks/useAuth";
+
 import { useModal } from "@/hooks/useModal";
 
 import { PostCampaignEnrollData } from "@/service/list";
+import useAuthStore from "@/store/useAuthStore";
 import { PostCampaignEnrollRequest } from "@/types/list";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -22,12 +23,12 @@ interface Props {
 
 export default function DetailButtons({
   campaignUrl,
-  userId,
   enrollData,
   campaignId,
+  userId,
 }: Props) {
   const router = useRouter();
-  const { accessToken, refreshToken, userName } = useAuth();
+  const { accessToken, refreshToken } = useAuthStore();
   const { isOpen, openModal, closeModal, message, setMessage } = useModal();
 
   console.log(userId);
@@ -58,14 +59,14 @@ export default function DetailButtons({
         campaignOptionId,
         campaignSubOptionId,
       },
-      accessToken,
-      refreshToken
+      accessToken as string,
+      refreshToken as string
     )
       .then(({ data }) => {
         if (data.data.isSave) {
           setMessage("참여 신청이 완료되었습니다.");
           openModal(() => {
-            router.push(`/campaign/${userName}`);
+            router.push(`/campaign/${userId}`);
           });
         }
       })

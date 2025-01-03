@@ -1,6 +1,5 @@
 import { AxiosResponse } from "axios";
-
-import api from "./base";
+import { apiWithoutAuth } from "./base";
 import {
   ResetTokenRequest,
   ResetTokenResponse,
@@ -10,24 +9,30 @@ import {
   SignupResponse,
 } from "@/types/signup";
 
+// 토큰이 필요한 요청
 export const resetTokenData = (
   param: ResetTokenRequest
 ): Promise<AxiosResponse<ResetTokenResponse>> =>
-  api.post(`users/reload`, param);
+  apiWithoutAuth.post(`/users/reload`, param);
 
+// 회원가입 요청 (토큰 필요 없음)
 export const PostSignupData = (
   param: SignupRequest
-): Promise<AxiosResponse<SignupResponse>> => api.post(`users/sign-up`, param);
+): Promise<AxiosResponse<SignupResponse>> =>
+  apiWithoutAuth.post(`/users/sign-up`, param);
 
+// 아이디 중복 체크 (토큰 필요 없음)
 export const GetAccountCheck = (param: {
   loginId: string;
 }): Promise<AxiosResponse<SignupResponse>> =>
-  api.get(`users/id-check`, {
+  apiWithoutAuth.get(`/users/id-check`, {
     params: {
       loginId: param.loginId,
     },
   });
 
+// 로그인 요청 (토큰 필요 없음)
 export const PostSigninData = (
   param: SigninRequest
-): Promise<AxiosResponse<SigninResponse>> => api.post(`users/sign-in`, param);
+): Promise<AxiosResponse<SigninResponse>> =>
+  apiWithoutAuth.post(`/users/sign-in`, param);
